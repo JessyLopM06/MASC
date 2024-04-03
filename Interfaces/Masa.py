@@ -43,8 +43,8 @@ active_mass.grid(row=0, column=1, pady=8, padx=10, sticky='w')
 density = tk.Label(root, text='Active material desnity (g cm³):', bg='#003399', font=('Arial',12,'bold'), fg='white',width=40)
 density.grid(row=1,column=0,pady=5,padx=10, sticky='w')
 
-ingresa_density = tk.Entry(root,width=20, font=('Arial',12),highlightbackground='blue4',highlightthickness=3)
-ingresa_density.grid(row=1, column=1, pady=8, padx=10, sticky='w')
+density = tk.Entry(root,width=20, font=('Arial',12),highlightbackground='blue4',highlightthickness=3)
+density.grid(row=1, column=1, pady=8, padx=10, sticky='w')
 
 #Mass of active material 
 mass_elec = tk.Label(root, text='Molecular Mass of active (g mol⁻¹):', bg='#003399', font=('Arial',12,'bold'), fg='white',width=40)
