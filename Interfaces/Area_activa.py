@@ -2,7 +2,7 @@ import tkinter as tk
 
 root = tk.Tk()
 root.config(bg='gray84')
-root.geometry('650x400') #ancho x largo
+root.geometry('650x500') #ancho x largo
 root.resizable(0, 0)
 root.title("Active Area")
 
@@ -35,12 +35,12 @@ for etiqueta in etiquetas:
     crear_caja_texto(etiqueta)
 """
 
-#mol
-mol = tk.Label(root, text='Molecular Mass of active (g mol⁻¹):', bg='#003399', font=('Arial',12,'bold'), fg='white',width=40)
-mol.grid(row=0,column=0,pady=8,padx=10, sticky='w')
+#Geometry Surface Area
+geometry_area = tk.Label(root, text='Geometry Surface Area (cm²):', bg='#003399', font=('Arial',12,'bold'), fg='white',width=40)
+geometry_area.grid(row=0,column=0,pady=5,padx=10, sticky='w')
 
-ingresa_mol = tk.Entry(root,width=20, font=('Arial',12),highlightbackground='blue4',highlightthickness=3)
-ingresa_mol.grid(row=0, column=1, pady=5, padx=10, sticky='w')
+geometry_area = tk.Entry(root,width=20, font=('Arial',12),highlightbackground='blue4',highlightthickness=3)
+geometry_area.grid(row=0, column=1, pady=8, padx=10, sticky='w')
 
 #density
 density = tk.Label(root, text='Active material desnity (g cm³):', bg='#003399', font=('Arial',12,'bold'), fg='white',width=40)
@@ -49,47 +49,65 @@ density.grid(row=1,column=0,pady=5,padx=10, sticky='w')
 ingresa_density = tk.Entry(root,width=20, font=('Arial',12),highlightbackground='blue4',highlightthickness=3)
 ingresa_density.grid(row=1, column=1, pady=8, padx=10, sticky='w')
 
-#geometry
-geometry = tk.Label(root, text='Geometry Surface Area (cm²):', bg='#003399', font=('Arial',12,'bold'), fg='white',width=40)
-geometry.grid(row=2,column=0,pady=5,padx=10, sticky='w')
+#Mass of active material 
+mass_elec = tk.Label(root, text='Molecular Mass of active (g mol⁻¹):', bg='#003399', font=('Arial',12,'bold'), fg='white',width=40)
+mass_elec.grid(row=2,column=0,pady=8,padx=10, sticky='w')
 
-ingresa_geometry = tk.Entry(root,width=20, font=('Arial',12),highlightbackground='blue4',highlightthickness=3)
-ingresa_geometry.grid(row=2, column=1, pady=8, padx=10, sticky='w')
+mass_elec = tk.Entry(root,width=20, font=('Arial',12),highlightbackground='blue4',highlightthickness=3)
+mass_elec.grid(row=2, column=1, pady=5, padx=10, sticky='w')
 
 #Potencial steps
-pot_steps = tk.Label(root, text='Potencial steps:', bg='#003399', font=('Arial',12,'bold'), fg='white',width=40)
-pot_steps.grid(row=3,column=0,pady=5,padx=10, sticky='w')
+div_win = tk.Label(root, text='Potencial steps:', bg='#003399', font=('Arial',12,'bold'), fg='white',width=40)
+div_win.grid(row=3,column=0,pady=5,padx=10, sticky='w')
 
-ingresa_steps = tk.Entry(root,width=20, font=('Arial',12),highlightbackground='blue4',highlightthickness=3)
-ingresa_steps.grid(row=3, column=1, pady=8, padx=10, sticky='w')
+div_win = tk.Entry(root,width=20, font=('Arial',12),highlightbackground='blue4',highlightthickness=3)
+div_win.grid(row=3, column=1, pady=8, padx=10, sticky='w')
 
 #Number of electons
-num_elec = tk.Label(root, text='Number of electrons:', bg='#003399', font=('Arial',12,'bold'), fg='white',width=40)
-num_elec.grid(row=4,column=0,pady=5,padx=10, sticky='w')
+electrons = tk.Label(root, text='Number of electrons:', bg='#003399', font=('Arial',12,'bold'), fg='white',width=40)
+electrons.grid(row=4,column=0,pady=5,padx=10, sticky='w')
 
-ingresa_elec = tk.Entry(root,width=20, font=('Arial',12),highlightbackground='blue4',highlightthickness=3)
-ingresa_elec.grid(row=4, column=1, pady=8, padx=10, sticky='w')
+electrons = tk.Entry(root,width=20, font=('Arial',12),highlightbackground='blue4',highlightthickness=3)
+electrons.grid(row=4, column=1, pady=8, padx=10, sticky='w')
 
 #Electic double layer capacitamce (Trassati)
-trassati = tk.Label(root, text='Electric double layer capacitance (Trassati Cg⁻¹):', bg='#003399', font=('Arial',12,'bold'), fg='white',width=40)
-trassati.grid(row=5,column=0,pady=5,padx=10, sticky='w')
+DLC = tk.Label(root, text='Electric double layer capacitance (Trassati Cg⁻¹):', bg='#003399', font=('Arial',12,'bold'), fg='white',width=40)
+DLC.grid(row=5,column=0,pady=5,padx=10, sticky='w')
 
-ingresa_trassati = tk.Entry(root,width=20, font=('Arial',12),highlightbackground='blue4',highlightthickness=3)
-ingresa_trassati.grid(row=5, column=1, pady=8, padx=10, sticky='w')
+DLC = tk.Entry(root,width=20, font=('Arial',12),highlightbackground='blue4',highlightthickness=3)
+DLC.grid(row=5, column=1, pady=8, padx=10, sticky='w')
 
 #Reference electroide
-ref_elec = tk.Label(root, text='Reference electroide:', bg='#003399', font=('Arial',12,'bold'), fg='white',width=40)
-ref_elec.grid(row=6,column=0,pady=5,padx=10, sticky='w')
+REFERENCE_ELECTRODE = tk.Label(root, text='Reference electrode:', bg='#003399', font=('Arial',12,'bold'), fg='white',width=40)
+REFERENCE_ELECTRODE.grid(row=6,column=0,pady=5,padx=10, sticky='w')
 
-ingresa_reference = tk.Entry(root,width=20, font=('Arial',12),highlightbackground='blue4',highlightthickness=3)
-ingresa_reference.grid(row=6, column=1, pady=8, padx=10, sticky='w')
+REFERENCE_ELECTRODE = tk.Entry(root,width=20, font=('Arial',12),highlightbackground='blue4',highlightthickness=3)
+REFERENCE_ELECTRODE.grid(row=6, column=1, pady=8, padx=10, sticky='w')
 
-#Current Density (mAcm⁻²)
-current = tk.Label(root, text='Current Density (mAcm⁻²):', bg='#003399', font=('Arial',12,'bold'), fg='white',width=40)
-current.grid(row=7,column=0,pady=5,padx=10, sticky='w')
+#Molar mass of active ion (g/mol ⁻¹)
+Mmol = tk.Label(root, text='Molar mass of active ion (g/mol ⁻¹):', bg='#003399', font=('Arial',12,'bold'), fg='white',width=40)
+Mmol.grid(row=7,column=0,pady=5,padx=10, sticky='w')
 
-ingresa_current = tk.Entry(root,width=20, font=('Arial',12),highlightbackground='blue4',highlightthickness=3)
-ingresa_current.grid(row=7, column=1, pady=8, padx=10, sticky='w')
+Mmol = tk.Entry(root,width=20, font=('Arial',12),highlightbackground='blue4',highlightthickness=3)
+Mmol.grid(row=7, column=1, pady=8, padx=10, sticky='w')
+
+#Mass of active material (g)
+mass_elec = tk.Label(root, text='Mass of active material (g):', bg='#003399', font=('Arial',12,'bold'), fg='white',width=40)
+mass_elec.grid(row=8,column=0,pady=5,padx=10, sticky='w')
+
+mass_elec = tk.Entry(root,width=20, font=('Arial',12),highlightbackground='blue4',highlightthickness=3)
+mass_elec.grid(row=8, column=1, pady=8, padx=10, sticky='w')
+
+# Molar mass of active material (g/mol)
+mol_weight= tk.Label(root, text='Molar mass of active material (g/mol):', bg='#003399', font=('Arial',12,'bold'), fg='white',width=40)
+mol_weight.grid(row=9,column=0,pady=5,padx=10, sticky='w')
+
+mol_weight = tk.Entry(root,width=20, font=('Arial',12),highlightbackground='blue4',highlightthickness=3)
+mol_weight.grid(row=9, column=1, pady=8, padx=10, sticky='w')
+
+
+
+
 
 
 
