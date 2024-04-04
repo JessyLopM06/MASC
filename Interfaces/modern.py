@@ -55,11 +55,6 @@ def clear_selected_files(listbox):
 def abrir_registro():
     subprocess.Popen(['python', 'Interfaces/excel.py'])
 
-#Para vincular las ventanas(scripts)
-def abrir_script_python():
-    ruta_script = "Interfaces/masa.py"  # Reemplaza con la ruta de tu script
-    subprocess.Popen(['python', ruta_script])  
-
 def ejecutar_descarga():
     # Ejecutar el script descarga.py
     subprocess.Popen(["python", "Interfaces/descarga.py"])
@@ -71,18 +66,6 @@ def ejecutar_settings():
 #a que archivo pertenece"""
 
     subprocess.Popen(["python", "Interfaces/archivos.py"])
-
-
-def funcion_del_boton_Masa():
-    subprocess.run(["python", "Masa.py"])
-
-
-def funcion_del_boton_Area():
-    subprocess.run(["python", "Area_activa.py"]) 
-
-def ejecutar_velocities():
-    #Ejecutar el script usuario_M.py
-    subprocess.Popen(['python',"Avancess/usuario_M.py"])
 
 
 root = tk.Tk()

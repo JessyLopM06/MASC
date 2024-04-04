@@ -1,3 +1,7 @@
+"""
+Este módulo proporciona una interfaz de para que el usario descargue sus archivos 
+utilizando tkinter.
+"""
 import tkinter as tk
 from tkinter import messagebox
 from tkinter import filedialog as fd
@@ -9,7 +13,8 @@ class DownloadFiles(tk.Toplevel):
         self.resizable(False, False)
         self.parent = parent
         self.list_of_checkboxes = list()
-        self.checkboxes = ['Interpolation', 'Obtaining of K', 'VOLTAMPEROGRAM', 'Total Q', 'Q%', 'MASOGRAMA', 'ACTIVE THICKNESS']
+        self.checkboxes = ['Interpolation', 'Obtaining of K', 'VOLTAMPEROGRAM',
+            'Total Q', 'Q%', 'MASOGRAMA', 'ACTIVE THICKNESS']
         self.list_of_checks = list()
         self.path = ''
 
@@ -19,10 +24,11 @@ class DownloadFiles(tk.Toplevel):
         self.frame_info.grid_columnconfigure(0, weight=1)
         self.frame_info.grid(sticky='nswe', padx=20, pady=20)
 
-        # Checkbox para seleccionar los archivos dentro de frame_info
+# Checkbox para seleccionar los archivos dentro de frame_info
         for i in range(len(self.checkboxes)):
             if i % 2 == 0:
-                actual_checkbox = tk.Checkbutton(self.frame_info, text=self.checkboxes[i], variable=tk.BooleanVar(), fg='black', selectcolor='gray84',font=('Arial',12))
+                actual_checkbox = tk.Checkbutton(self.frame_info, text=self.checkboxes[i],
+                    variable=tk.BooleanVar(), fg='black', selectcolor='gray84',font=('Arial',12))
                 actual_checkbox.grid(row=i, column=0, sticky='nswe', padx=20, pady=10)
                 self.list_of_checkboxes.append(actual_checkbox)
             else:
@@ -31,15 +37,18 @@ class DownloadFiles(tk.Toplevel):
                 self.list_of_checkboxes.append(actual_checkbox)
 
         # Botón para seleccionar la carpeta donde se guardarán los archivos
-        self.btn_select_folder = tk.Button(self, text='📁 Select Folder', bg='blue4', font=('Arial',12,'bold'),fg='white', command=lambda: self.select_folder())
+        self.btn_select_folder = tk.Button(self, text='📁 Select Folder', bg='blue4',
+                font=('Arial',12,'bold'),fg='white', command=lambda: self.select_folder())
         self.btn_select_folder.grid(row=1, column=0, sticky='nswe', padx=10, pady=10)
 
         # Botón para cancelar la selección de archivos
-        self.btn_cancel = tk.Button(self, text='❌ Cancel', bg='blue4', font=('Arial',12,'bold'),fg='white', command=lambda: self.destroy())
+        self.btn_cancel = tk.Button(self, text='❌ Cancel', bg='blue4',
+            font=('Arial',12,'bold'),fg='white', command=lambda: self.destroy())
         self.btn_cancel.grid(row=2, column=0, sticky='nswe', padx=10, pady=10)
         
         # Botón para aceptar los archivos seleccionados
-        self.btn_accept = tk.Button(self, text='✔ Accept', bg='blue4',font=('Arial',12,'bold'), fg='white', command=lambda: self.handler_submit())
+        self.btn_accept = tk.Button(self, text='✔ Accept', bg='blue4',
+            font=('Arial',12,'bold'), fg='white', command=lambda: self.handler_submit())
         self.btn_accept.grid(row=2, column=1, sticky='nswe', padx=10, pady=10)
 
     def select_folder(self):
