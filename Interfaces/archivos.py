@@ -101,3 +101,4 @@ scrollbar.config(command=lista.yview)
 row_numero = 1
 
 ventana.mainloop()
+#
