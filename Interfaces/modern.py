@@ -1,4 +1,6 @@
-
+"""
+Este módulo proporciona una interfaz de los menu del modelo 1-3 utilizando tkinter.
+"""
 
 import tkinter as tk
 import os
