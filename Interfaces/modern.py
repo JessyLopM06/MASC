@@ -16,15 +16,10 @@ from customtkinter import CTk, CTkTabview
 import tkinter.ttk as ttk
 
 #Colors
-#00ff00,#ffffff,#ff0000,#ffff00,#ff00ff
+#00ff00,#ffffff,#ff0000,#ffff00,#ff00ff,#00A000,#C0C0C0
 
 #Azules
-#0000ff ,#5353ec, #1919e6,#1414b8,#2c2c7d,#00aaff,#0066cc,#003399,#000080           
-Verdes= "#00A000"                   '                       '        
-Grises="#C0C0C0"             
-   
-
-
+#0000ff ,#5353ec, #1919e6,#1414b8,#2c2c7d,#00aaff,#0066cc,#003399,#000080
 class TabViewWithColoredMargin:
     def __init__(self, root) -> None:
         self.root = root
@@ -40,8 +35,6 @@ class TabViewWithColoredMargin:
         # Agregamos las pestañas al TabView
         for tab_name  in ['Interpolation', 'Obtaining of K', 'VOLTAMPEROGRAM', 'Total Q', 'Q%', 'MASOGRAMA', 'ACTIVE THICKNESS', 'Barras 2']:
             self.tabview.add(tab_name)
-
-
 
 #List box de inico del modelo 1
 def choose_files(listbox):
@@ -95,7 +88,7 @@ def switch(indicator_lb, page):
             child['bg']= 'SystemButtonFace'
 
 
-  # Ajusta el grosor del borde para hacer el indicador más grande
+# Ajusta el grosor del borde para hacer el indicador más grande
     indicator_lb['bg'] = '#0097e8'
     #indicator_lb['borderwidth'] = 100  # Puedes ajustar el valor según tu preferencia
     indicator_lb['width'] = 100 # Puedes ajustar el valor según tu preferencia
@@ -104,22 +97,20 @@ def switch(indicator_lb, page):
 #Para que aparezca informacion en diferente boton
     for fm in main_fm.winfo_children():
         fm.destroy()
-        root.update()
-   
+        root.update() 
     page()
     
 #Color de la barra de menu
 options_fm= tk.Frame(root,bg='blue4')#bg=gray 
 
 #Primer Boton
-
 home_btn = tk.Button(options_fm, text='Comments', font=('Arial', 13,'bold'),bg='blue4',
-                     bd=0, fg='snow', activeforeground='#1414b8',
-                     command=abrir_registro)
+                    bd=0, fg='snow', activeforeground='#1414b8',
+                    command=abrir_registro)
 
 '''home_btn = tk.Button(options_fm, text='' , font=('Arial, 13'),
-                     bd=0, fg='#0097e8' ,activeforeground='#0097e8',
-                     command=lambda:switch(indicator_lb=home_inidicator_lb,
+                    bd=0, fg='#0097e8' ,activeforeground='#0097e8',
+                    command=lambda:switch(indicator_lb=home_inidicator_lb,
                                         page=home_page))'''
 
 home_btn.place(x=0 , y=0, width=125  )
@@ -145,36 +136,35 @@ modelo3_inidicator_lb.place(x=397, y=30, width=80, height=2)
 about_inidicator_lb = tk.Label(options_fm)
 about_inidicator_lb.place(x=525, y=30, width=80, height=2)
 
-                   
 #Segundo Boton
 modelo1_btn = tk.Button(options_fm, text='Model 1', font=('Arial', 11,'bold'),bg='blue4',
-                     bd=0, fg='snow' ,activeforeground='#1414b8',
-                     command=lambda:switch(indicator_lb=modelo1_inidicator_lb,
-                     page=modelo1_page))
+                    bd=0, fg='snow' ,activeforeground='#1414b8',
+                    command=lambda:switch(indicator_lb=modelo1_inidicator_lb,
+                    page=modelo1_page))
 
 modelo1_btn.place(x=125 , y=0, width=125  )
 
 #Tercer Boton
 modelo2_btn = tk.Button(options_fm, text='Model 2' , font=('Arial', 11,'bold'),bg='blue4',
-                     bd=0, fg='snow' ,activeforeground='#1414b8',
-                     command=lambda:switch(indicator_lb=modelo2_inidicator_lb,
-                                           page=modelo2_page))
+                    bd=0, fg='snow' ,activeforeground='#1414b8',
+                    command=lambda:switch(indicator_lb=modelo2_inidicator_lb,
+                        page=modelo2_page))
 
 modelo2_btn.place(x=250 , y=0, width=125  )
 
 #Cuarto Boton
 modelo3 = tk.Button(options_fm, text='Model 3' , font=('Arial', 11,'bold'),bg='blue4',
-                     bd=0, fg='snow' ,activeforeground='#1414b8',
-                     command=lambda:switch(indicator_lb=modelo3_inidicator_lb,
-                                           page=modelo3_page))
+                    bd=0, fg='snow' ,activeforeground='#1414b8',
+                    command=lambda:switch(indicator_lb=modelo3_inidicator_lb,
+                                        page=modelo3_page))
 
 modelo3.place(x=375 , y=0, width=125  )
 
 #Quinto Boton
 modelo3_btn = tk.Button(options_fm, text='About' , font=('Arial', 11,'bold'),bg='blue4',
-                     bd=0, fg='snow' ,activeforeground='#1414b8',
-                     command=lambda:switch(indicator_lb=about_inidicator_lb,
-                                           page=about_page))
+                    bd=0, fg='snow' ,activeforeground='#1414b8',
+                    command=lambda:switch(indicator_lb=about_inidicator_lb,
+                                        page=about_page))
 
 modelo3_btn.place(x=500 , y=0, width=125  )
 options_fm.pack(pady=5)
@@ -270,7 +260,7 @@ def modelo1_page():
     """V = tk.Label(frame1, text='Select one or more text files:', bg='gray84', font=('Arial', 12, 'bold'), fg='#003399', width=30)
     V.grid(column=0, row=0, pady=10, padx=20)"""
 
-     #Botones para el inicio del modelo 1 download,setings y continue
+#Botones para el inicio del modelo 1 download,setings y continue
     # Button to download
     btn_download = Button(frame1, text='⬇ Download Files', font=('Arial', 12, 'bold'), bg='blue4', fg='white',activebackground='snow',activeforeground='blue4', command=ejecutar_descarga)
     btn_download.grid(row=4, column=0, columnspan=2, pady=2, padx=(10,10), sticky='nsew')  # Alinea a la derecha
@@ -326,14 +316,13 @@ def about_page():
 The research on energy storage devices such as supercapacitors and batteries generates a lot of data that must be processed manually in several software, slowing down its analysis and interpretation. Thus, the lack of specialized software hinders accurate data analysis in the field of  supercapacitors, especially for non-programming users.
 In this work we report a new software designed to simplify the electrochemical data analysis obtained in the study of new materials and devices for electrochemical capacitors and batteries. The Multiple Analyses of Supercapacitors Software (MASC) offers an efficient solution for electrochemical data analysis in this growing field.
 
- 2. Methodology​
+2. Methodology​
 MASC is purpose-built software for simplifying electrochemical data analysis in the quest for new supercapacitor materials and devices. Developed in Python with tkinter, MASC efficiently executes complex calculations using various functions.
 Functionality: MASC accurately computes electrochemical properties, ensuring comprehensive coverage. Testing: Stringent testing protocols validate its accuracy and reliability across scenarios.
 Structured in three modules, MASC seamlessly integrates data processing workflows, utilizing CSV files for input. Its goal is to offer an intuitive interface for researchers and scientists.
 MASC aims to enhance data analysis efficiency by providing specialized and intuitive software. Initially targeted at CIIDIT's supercapacitor lab, future iterations will cater to users with diverse experience levels.
 Requirements Analysis: Comprehensive understanding of project needs is key. Software Design: Focus on creating an intuitive and functional interface. Functionality Implementation: Robust algorithms for precise calculations. Testing and Validation: Extensive testing ensures reliability. Implementation and Distribution: Initial deployment planned in the research lab, with broader accessibility in future phases.​
     """
-
     about_text_txt = tk.Text(about_page_fm, wrap="word")
     about_text_txt.insert(tk.END, about_text)
     about_text_txt.config(state="disabled", font=("Arial", 11), bg="gray84", fg="black")

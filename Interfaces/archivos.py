@@ -88,7 +88,7 @@ Button(width=10, font=('Arial', 12, 'bold'), fg='white', text='Area', bg='blue4'
 #Button Mass
 Button(width=10, font=('Arial', 12, 'bold'), fg='white', text='Mass', bg='blue4',
     bd=5, command=mostrar_masa).grid(column=1, row=3, columnspan=2, pady=(20, 20),
-                                    padx=(20, 10))
+                                    padx=(30, 6))
 Button(width=10, font=('Arial', 12, 'bold'), fg='white', text='✔ Accept', bg='blue4',
     bd=5, command=lambda: cerrar_ventana(ventana)).grid(column=2, row=3, columnspan=5,
         pady=10, padx=10)
