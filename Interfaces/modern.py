@@ -74,7 +74,7 @@ main_frame.pack()
 
 ruta_icono = "./imagenes/wh.ico"
 root.iconbitmap(ruta_icono)
-root.title('MASC: Multiple Analysis Software for Capacitors')
+root.title('MASC: Multiple Analysis Software for Supercapacitors')
 
 texto_copyright = "Copyright © rlucioporto.com\nLa ciencia, una luz en la oscuridad.\n   "
 label_copyright = tk.Label(root, text=texto_copyright, bg="navy", fg="white", font=("Arial", 8,'bold'))
@@ -174,7 +174,7 @@ options_fm.pack_propagate(False)
 options_fm.configure(width=1400 ,height=35)
 
 
-# Función para mostrar las imágenes y el texto
+"""# Función para mostrar las imágenes y el texto
 def mostrar_todo(event=None):
     label_left.grid(row=0, column=0, padx=10)
     label_center.grid(row=0, column=1)
@@ -186,41 +186,13 @@ def ocultar_todo(event=None):
     label_left.grid_forget()
     label_center.grid_forget()
     label_right.grid_forget()
-    label_texto.pack_forget()
-
-# Crear un marco para contener las imágenes
-image_frame = tk.Frame(root,bg='gray87')
-image_frame.pack(side=tk.TOP, fill=tk.X)
-
-# Configurar columnas para que se expandan y centren las imágenes
-image_frame.columnconfigure(0, weight=1)
-image_frame.columnconfigure(1, weight=1)
-image_frame.columnconfigure(2, weight=1)
-
-
-# Cargar las imágenes
-image_left = tk.PhotoImage(file="imagenes/uniM.png")
-label_left = tk.Label(image_frame, image=image_left,bg='gray87')
-label_left.grid(row=0, column=0, padx=10)
-
-image_center = tk.PhotoImage(file="imagenes/logM1.png")#m2ph
-label_center = tk.Label(image_frame, image=image_center,bg='gray87')
-label_center.grid(row=0, column=1)
-
-image_right = tk.PhotoImage(file="imagenes/92.png")
-label_right = tk.Label(image_frame, image=image_right,bg='gray87')
-label_right.grid(row=0, column=2, padx=10)
+    label_texto.pack_forget()"""
 
 
 # Texto debajo de las imágenes
 texto = "Dr. Raúl Lucio Porto\nCentro de Innovación, Investigación y Desarrollo en Ingeniería y Tecnología\nCentro de Innovación en Ingeniería de Tecnología Inteligente Biomédica y Mecatrónica\n"
-label_texto = tk.Label(image_frame, text=texto, justify="center", wraplength=1000, width=1400, bg="blue4", fg="white", font=("Arial", 10, 'bold'))
-label_texto.grid(row=1, column=0, columnspan=3)
-
-
-# Mostrar todo al presionar la tecla 'm' y ocultar todo al presionar la tecla 'o'
-root.bind('m', mostrar_todo)
-root.bind('o', ocultar_todo)
+label_texto = tk.Label( root,text=texto, justify="center", wraplength=1000, width=1400, bg="blue4", fg="white", font=("Arial", 9, 'bold'))
+label_texto.pack()
 
 
 def home_page():
@@ -253,7 +225,7 @@ def modelo1_page():
     inner_frame.bind("<Configure>", lambda e: canvas.configure(scrollregion=canvas.bbox("all")))
     canvas.create_window((0, 0), window=inner_frame, anchor="nw")
 
-    # Crear el primer frame dentro del frame interior
+    # Crear el primer frame dentro del frame interior 
     frame1 = Frame(inner_frame, bg='gray84', width=3000, height=3000)
     frame1.grid(column=0, row=0, sticky='nsew')
 
@@ -269,10 +241,10 @@ def modelo1_page():
     btn_settings = Button(frame1, text='⚙ Settings', bg='blue4', fg='white', font=('Arial', 12, 'bold'),activeforeground='blue4',command=ejecutar_settings)
     btn_settings.grid(row=5,column=0,columnspan=2,pady=2,padx=(10,10),sticky='nsew')
 
-    #Button to continue
+    """#Button to continue
     btn_continue = tk.Button(frame1, text='➡ Start', bg='blue4', fg='white', font=('Arial', 12, 'bold'),activebackground='snow',activeforeground='blue4')
     btn_continue.grid(row=7,column=0,columnspan=2,pady=2,padx=(5,5),sticky='nsew')
-
+"""
     # Crear el segundo frame dentro del frame interior
     frame2 = Frame(inner_frame, bg='gray84', width=2000, height=2000)#ancho x alto
     frame2.grid(column=1, row=0, sticky='nsew')
@@ -302,14 +274,43 @@ def modelo3_page():
 
     modelo3_page_lb.pack(pady=20)
 
-    modelo3_page_fm.pack(fill=tk.BOTH, expand=True)    
+    modelo3_page_fm.pack(fill=tk.BOTH, expand=True)
+    
+        
+image_left = None
+image_center = None
+image_right = None
 
 def about_page():
+    global image_left, image_center, image_right  # Hacer las variables de imagen globales
     about_page_fm = tk.Frame(main_fm)  # Cambiar el fondo del marco a gris
+    about_page_fm.pack(fill=tk.BOTH, expand=True)
 
     about_page_lb = tk.Label(about_page_fm, text='About MASC: Multiple Analysis Software for Capacitors',
-                            font=('Arial',15,'bold'), fg='#1414b8')
-    about_page_lb.pack(pady=10,padx=10)
+                            font=('Arial', 15, 'bold'), fg='#1414b8')
+    about_page_lb.pack(pady=10, padx=10)
+
+    # Crear un marco para contener las imágenes
+    image_frame = tk.Frame(about_page_fm)
+    image_frame.pack(side=tk.TOP, fill=tk.X)
+
+    # Configurar columnas para que se expandan y centren las imágenes
+    image_frame.columnconfigure(0, weight=1)
+    image_frame.columnconfigure(1, weight=1)
+    image_frame.columnconfigure(2, weight=1)
+
+    # Cargar las imágenes
+    image_left = tk.PhotoImage(file="imagenes/uniM.png")
+    label_left = tk.Label(image_frame, image=image_left)
+    label_left.grid(row=0, column=0, padx=10)
+
+    image_center = tk.PhotoImage(file="imagenes/logM1.png")  # m2ph
+    label_center = tk.Label(image_frame, image=image_center)
+    label_center.grid(row=0, column=1)
+
+    image_right = tk.PhotoImage(file="imagenes/92.png")
+    label_right = tk.Label(image_frame, image=image_right)
+    label_right.grid(row=0, column=2, padx=10)
 
     about_text = """
     1. Introduction
