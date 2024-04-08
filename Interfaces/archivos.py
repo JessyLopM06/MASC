@@ -84,14 +84,22 @@ Button(width=10, font=('Arial', 12, 'bold'), fg='white', text='➕Add', bg='blue
                             veloc, lista)).grid(column=0, row=1, pady=10, padx=20)
 #Button Area
 Button(width=10, font=('Arial', 12, 'bold'), fg='white', text='Area', bg='blue4',
-    bd=5, command=mostrar_area).grid(column=0, row=3, columnspan=3, pady=10, padx=10)
+    bd=5, command=mostrar_area).grid(column=0, row=3, columnspan=3, pady=10, padx=(20,6))
 #Button Mass
 Button(width=10, font=('Arial', 12, 'bold'), fg='white', text='Mass', bg='blue4',
-    bd=5, command=mostrar_masa).grid(column=1, row=3, columnspan=2, pady=(20, 20),
-                                    padx=(30, 6))
-Button(width=10, font=('Arial', 12, 'bold'), fg='white', text='✔ Accept', bg='blue4',
+    bd=5, command=mostrar_masa).grid(column=1, row=3, columnspan=2, pady=5,
+                                    padx=(50, 6))
+#Button Generar Area
+Button(width=13, font=('Arial', 11, 'bold'), fg='white', text='Generate by Area', bg='#116c2c',
+    bd=5, command=mostrar_area).grid(column=0, row=4, columnspan=3, pady=10, padx=(30,6))
+#Button  Generar Mass
+Button(width=14, font=('Arial', 11, 'bold'), fg='white', text='Generate by Mass', bg='#116c2c',
+    bd=5, command=mostrar_masa).grid(column=1, row=4, columnspan=2, pady=5,
+                                    padx=(100,6))
+
+"""Button(width=10, font=('Arial', 12, 'bold'), fg='white', text='✔ Accept', bg='blue4',
     bd=5, command=lambda: cerrar_ventana(ventana)).grid(column=2, row=3, columnspan=5,
-        pady=10, padx=10)
+        pady=10, padx=10)"""
 
 scrollbar = Scrollbar(ventana, orient="vertical")
 scrollbar.grid(row=2, column=4, sticky="ns")
