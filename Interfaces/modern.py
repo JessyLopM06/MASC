@@ -1,4 +1,6 @@
-
+"""
+Este módulo proporciona una interfaz de los menu del modelo 1-3 utilizando tkinter.
+"""
 
 import tkinter as tk
 import os
@@ -512,15 +514,15 @@ root.geometry('1000x1000')#Ancho x Largo
 
 
 # Crear un frame principal
-main_frame = tk.Frame(root)
+main_frame = ttk.Frame(root)
 main_frame.pack()
 
 ruta_icono = "./imagenes/wh.ico"
 root.iconbitmap(ruta_icono)
-root.title('MASC: Multiple Analysis Software for Capacitors')
+root.title('MASC: Multiple Analysis Software for Supercapacitors')
 
 """texto_copyright = "Copyright © rlucioporto.com\nLa ciencia, una luz en la oscuridad.\n   "
-label_copyright = tk.Label(about_page_fm, text=texto_copyright, bg="navy", fg="white", font=("Arial", 8,'bold'))
+label_copyright = tk.Label(root, text=texto_copyright, bg="navy", fg="white", font=("Arial", 8,'bold'))
 label_copyright.pack(side="bottom", fill="both")"""
 
 #Se desliza el inidicador
@@ -619,10 +621,10 @@ options_fm.pack(pady=5)
 options_fm.pack_propagate(False)
 options_fm.configure(width=1400 ,height=35)
 
-# Texto debajo de las imágenes
+"""# Texto debajo de las imágenes
 texto = "Dr. Raúl Lucio Porto\nCentro de Innovación, Investigación y Desarrollo en Ingeniería y Tecnología\nCentro de Innovación en Ingeniería de Tecnología Inteligente Biomédica y Mecatrónica\n"
 label_texto = tk.Label( root,text=texto, justify="center", wraplength=1000, width=1400, bg="blue4", fg="white", font=("Arial", 9, 'bold'))
-label_texto.pack()
+label_texto.pack()"""
 
 
 def home_page():
@@ -645,18 +647,13 @@ def modelo1_page():
     canvas = tk.Canvas(main_fm, bg='gray84', highlightthickness=0)#main_fm, bg='#0097e8', highlightthickness=0
     canvas.pack(side=tk.LEFT, fill=tk.BOTH, expand=True)
     
-    # Crear un scrollbar para el canvas
-    scrollbar = tk.Scrollbar(main_fm, orient=tk.VERTICAL, command=canvas.yview)
-    scrollbar.pack(side=tk.RIGHT, fill=tk.Y)
-    canvas.configure(yscrollcommand=scrollbar.set)
-
-    # Crear un scrollbar para el canvas
-    scrollbar = tk.Scrollbar(main_fm, orient=tk.HORIZONTAL, command=canvas.xview)
-    scrollbar.pack(side=tk.BOTTOM, fill=tk.X)
-    canvas.configure(xscrollcommand=scrollbar.set)
+    scrollbar_x = ttk.Scrollbar(main_fm, orient=tk.HORIZONTAL, command=canvas.xview)
+    scrollbar_x.pack(side=tk.BOTTOM, fill=tk.X)  # Añade un pequeño padding horizontal
+    canvas.configure(xscrollcommand=scrollbar_x.set)
+    
 
     # Crear el frame interior que contendrá todos los elementos deslizables
-    inner_frame = tk.Frame(canvas, bg='navy')
+    inner_frame = ttk.Frame(canvas)
     inner_frame.bind("<Configure>", lambda e: canvas.configure(scrollregion=canvas.bbox("all")))
     canvas.create_window((0, 0), window=inner_frame, anchor="nw")
 
@@ -678,9 +675,11 @@ def modelo1_page():
     btn_continue.grid(row=7,column=0,columnspan=2,pady=2,padx=(5,5),sticky='nsew')
 
     # Crear el segundo frame dentro del frame interior
-    frame2 = Frame(inner_frame, bg='gray84')#ancho x alto
-    frame2.config(width=970)
+    frame2 = Frame(inner_frame, bg='gray64')#ancho x alto
+    frame2.config(width=4000, height=4000)
     frame2.grid(column=1, row=0, sticky='nsew')
+
+    
 
     # Agregar el código TabView al frame2
     app = PestañasVerticales(frame2)
@@ -1033,7 +1032,7 @@ def about_page():
     about_page_fm = tk.Frame(main_fm)  # Cambiar el fondo del marco a gris
     about_page_fm.pack(fill=tk.BOTH, expand=True)
 
-    about_page_lb = tk.Label(about_page_fm, text='About MASC: Multiple Analysis Software for Capacitors',
+    about_page_lb = tk.Label(about_page_fm, text='About MASC: Multiple Analysis Software for Supercpacitors',
                             font=('Arial', 15, 'bold'), fg='#1414b8')
     about_page_lb.pack(pady=10, padx=10)
 
@@ -1062,6 +1061,11 @@ def about_page():
     texto_copyright = "Copyright © rlucioporto.com\nLa ciencia, una luz en la oscuridad.\n   "
     label_copyright = tk.Label(about_page_fm, text=texto_copyright, bg="navy", fg="white", font=("Arial", 8,'bold'))
     label_copyright.pack(side="bottom", fill="both")
+
+    # Texto debajo de las imágenes
+    texto = "Dr. Raúl Lucio Porto\nCentro de Innovación, Investigación y Desarrollo en Ingeniería y Tecnología\nCentro de Innovación en Ingeniería de Tecnología Inteligente Biomédica y Mecatrónica\n"
+    label_texto = tk.Label( about_page_fm,text=texto, justify="center", wraplength=1000, width=1400, bg="blue4", fg="white", font=("Arial", 9, 'bold'))
+    label_texto.pack()
 
     about_text = """
     1. Introduction
