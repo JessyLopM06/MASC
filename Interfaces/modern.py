@@ -18,7 +18,7 @@ import tkinter.ttk as ttk
 import tkinter as tk
 from tkinter import ttk
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg, NavigationToolbar2Tk
-from cerebro_modelo import Normalizacion, Oxidation, Reduction, ParameterB, Diffusive_Capacitive, Capacitive_Current, Diffusive_Current, Diffusive_Capacitive_Charges, SpecificChargeVSSweepSpeed, PercentageofSpecificCharge, Diffusive_Capacitive_Positive_Charge, SpecificChargeVSSweepSpeedPos, PercentageofSpecificChargePos, Diffusive_Capacitive_Negative_Charge, SpecificChargeVSSweepSpeedNeg, PercentageofSpecificChargeNeg, Masogram, Insertogram
+from cerebro_modelo import Normalizacion, Oxidation, Reduction, Diffusive_Capacitive, Capacitive_Current, Diffusive_Current, ParameterB,Diffusive_Capacitive_Charges, SpecificChargeVSSweepSpeed, PercentageofSpecificCharge, Diffusive_Capacitive_Positive_Charge, SpecificChargeVSSweepSpeedPos, PercentageofSpecificChargePos, Diffusive_Capacitive_Negative_Charge, SpecificChargeVSSweepSpeedNeg, PercentageofSpecificChargeNeg, Masogram, InsertogramMassVersion, InsertogramAreaVersion, InsertogramMassVersionChargePos, InsertogramMassVersionChargeNeg
 import matplotlib.pyplot as plt
 from scipy.interpolate import interp1d
 import matplotlib.ticker as mticker
@@ -37,13 +37,15 @@ diffusive_capacitive_charges_values = Diffusive_Capacitive_Charges()
 scharge_vs_sspeed_values = SpecificChargeVSSweepSpeed()
 percentage_specific_charge_values = PercentageofSpecificCharge()
 masogram_values = Masogram()
-insertogram_values = Insertogram()
+insertogram_mass_values = InsertogramMassVersion()
 diffusive_capacitive_positive_charge_values = Diffusive_Capacitive_Positive_Charge()
 scharge_vs_sspeed_pos_values = SpecificChargeVSSweepSpeedPos()
 percentage_specific_charge_pos_values = PercentageofSpecificChargePos()
 diffusive_capacitive_negative_charge_values = Diffusive_Capacitive_Negative_Charge()
 scharge_vs_sspeed_neg_values = SpecificChargeVSSweepSpeedNeg()
 percentage_specific_charge_neg_values = PercentageofSpecificChargeNeg()
+insertogram_mass_version_charge_pos_values = InsertogramMassVersionChargePos()
+insertogram_mass_version_charge_neg_values = InsertogramMassVersionChargeNeg()
 
 normalization_names_list = []  # Arreglo para almacenar los nombres generados
 normalization_names_dict = {}  # Diccionario para almacenar los datos
@@ -55,12 +57,20 @@ diffusive_current_names_list = []
 diffusive_current_names_dict = {}
 diffusive_capacitive_charges_names_list = []
 diffusive_capacitive_charges_names_dict = {}
+massogram_names_list = []
+massogram_names_dict = {}
+insertogram_mass_names_list = []
+insertogram_mass_names_dict = {}
 diffusive_capacitive_positive_charge_names_list = []
 diffusive_capacitive_positive_charge_names_dict = {}
+insertogram_mass_pos_names_list = []
+insertogram_mass_pos_names_dict = {}
 diffusive_capacitive_negative_charge_names_list = []
 diffusive_capacitive_negative_charge_names_dict = {}
-# pestañas_superiores = ['Normalization', 'Ks positive current ', 'Ks negative current', 'b parameter', 'Cyclic voltammograms\n(Experimental & Model)', 'Capacitive Current', 'Diffusive Current', 'Deconvolution of\nSpecific Charge vs Scan rate', 'Specific charge vs Scan rate', '% Specific Charge vs Scan Rate', 'Massograms', 'Active Thickness', 'Deconvolution of\nSpecific Charge vs Scan rate (+)', 'Specific charge vs Scan rate (+)', '% Specific Charge vs Scan Rate (+)', 'Deconvolution of\nSpecific Charge vs Scan rate (-)', 'Specific charge vs Scan rate (-)', '% Specific Charge vs Scan Rate (-)',]
-pestañas_superiores = ['Normalization', 'Ks positive current ', 'Ks negative current', 'b parameter', 'Cyclic voltammograms(Experimental & Model)', 'Capacitive Current', 'Diffusive Current', 'Deconvolution of Specific Charge vs Scan rate', 'Specific charge vs Scan rate', '% Specific Charge vs Scan Rate', 'Massograms', 'Active Thickness', 'Deconvolution of Specific Charge vs Scan rate (+)', 'Specific charge vs Scan rate (+)', '% Specific Charge vs Scan Rate (+)', 'Deconvolution of Specific Charge vs Scan rate (-)', 'Specific charge vs Scan rate (-)', '% Specific Charge vs Scan Rate (-)']
+insertogram_mass_neg_names_list = []
+insertogram_mass_neg_names_dict = {}
+
+pestañas_superiores = ['Normalization', 'Ks positive current', 'Ks negative current', 'Cyclic voltammograms\n(Experimental & Model)', 'Capacitive Current', 'Diffusive Current', 'b parameter', 'Deconvolution of\nSpecific Charge vs Scan rate', 'Specific charge vs Scan rate', '% Specific Charge vs Scan Rate', 'Massograms', 'Active Thickness', 'Deconvolution of\nSpecific Charge vs Scan rate (+)', 'Specific charge vs Scan rate (+)', '% Specific Charge vs Scan Rate (+)', 'Active Thickness (+)', 'Deconvolution of\nSpecific Charge vs Scan rate (-)', 'Specific charge vs Scan rate (-)', '% Specific Charge vs Scan Rate (-)', 'Active Thickness (-)']
 
 class ZoomableGraph:
     def __init__(self, parent, label):
@@ -91,9 +101,9 @@ class ZoomableGraph:
             self.ax.legend()
             self.ax.set_xlabel(options['x_label'])
             self.ax.set_ylabel(options['y_label'])
-            #self.ajustar_guardar_cerrar_graph(f'OOPVersion/generated_graphs/normalization_{speed}mVs.png') #graph
-            #self.save_data(data=data[0], text=f'OOPVersion/generated_data/normalization_UExp_{speed}mVs.txt') # x
-            #self.save_data(data=data[1], text=f'OOPVersion/generated_data/normalization_IExp_{speed}mVs.txt') # y
+            self.ajustar_guardar_cerrar_graph(f'OOPVersion/generated_graphs/normalization_{speed}mVs.png') #graph
+            self.save_data(data=data[0], text=f'OOPVersion/generated_data/normalization_UExp_{speed}mVs.txt') # x
+            self.save_data(data=data[1], text=f'OOPVersion/generated_data/normalization_IExp_{speed}mVs.txt') # y
         elif self.label == pestañas_superiores[1]:
             for i in range(len(oxidation_values.IKpos)):
                 self.ax.plot(oxidation_values.UKpos, oxidation_values.IKpos[i], label=f'Line {i+1}', linewidth=0.8)
@@ -101,29 +111,18 @@ class ZoomableGraph:
             self.ax.set_ylabel('Intensity')
             self.ax.grid(False)
             #self.ax.set_title()
-            #self.ajustar_guardar_cerrar_graph('OOPVersion/generated_graphs/Oxidation_ScanRate_vs_Intensity.png') #graph
-            #self.save_data(oxidation_values.UKpos, text='OOPVersion/generated_data/Oxidation_UKpos.txt') # x
-            #self.save_data(oxidation_values.IKpos[i], text='OOPVersion/generated_data/Oxidation_IKpos.txt') # y
+            self.ajustar_guardar_cerrar_graph('OOPVersion/generated_graphs/ks_positive_current.png') #graph
+            self.save_data(oxidation_values.UKpos, text='OOPVersion/generated_data/ks_positive_current_UKpos.txt') # x
+            self.save_data(oxidation_values.IKpos[i], text='OOPVersion/generated_data/ks_positive_current_IKpos.txt') # y
         elif self.label == pestañas_superiores[2]:
             for i in range(len(reduction_values.IKneg)):
                 self.ax.plot(reduction_values.UKneg, reduction_values.IKneg[i], label=f'Line {i+1}', linewidth=0.8)
             self.ax.set_xlabel('Scan rate')
             self.ax.set_ylabel('Intensity')
             self.ax.grid(False)
-            #self.ajustar_guardar_cerrar_graph('OOPVersion/generated_graphs/Intensity_ScanRate_vs_Intensity.png') #graph
-            #self.save_data(reduction_values.UKneg, text='OOPVersion/generated_data/Reduction_UKneg.txt') # x
-            #self.save_data(reduction_values.IKneg[i], text='OOPVersion/generated_data/Reduction_IKneg.txt') # y
-        elif self.label == pestañas_superiores[3]:
-            self.ax.plot(parameterB_values.U, parameterB_values.rbpos, 'r', label='b oxidation')
-            self.ax.plot(parameterB_values.U, parameterB_values.rbneg, 'b', label='b reduction')
-            self.ax.set_xlabel(REFERENCE_ELECTRODE)
-            self.ax.set_ylabel('b parameter')
-            self.ax.set_title('b - oxidation & reduction') 
-            self.ax.legend()
-            #self.ajustar_guardar_cerrar_graph('OOPVersion/generated_graphs/ParameterB_Oxidation_Reduction.png') #graph
-            #self.save_data(parameterB_values.U, text=f'OOPVersion/generated_data/ParameterB_U.txt') # x (1&2)
-            #self.save_data(parameterB_values.rbpos, text=f'OOPVersion/generated_data/ParameterB_rbpos.txt') # y1
-            #self.save_data(parameterB_values.rbneg, text=f'OOPVersion/generated_data/ParameterB_rbneg.txt') # y2
+            self.ajustar_guardar_cerrar_graph('OOPVersion/generated_graphs/ks_negative_current.png') #graph
+            self.save_data(reduction_values.UKneg, text='OOPVersion/generated_data/ks_negative_current_UKneg.txt') # x
+            self.save_data(reduction_values.IKneg[i], text='OOPVersion/generated_data/ks_negative_current_IKneg.txt') # y
         elif self.label in diffusive_capacitive_currents_names_dict:
             options = diffusive_capacitive_currents_names_dict[self.label]
             speed = options['speed']
@@ -140,12 +139,12 @@ class ZoomableGraph:
             self.figure.legend(options['legend'])
             self.ax.set_xlabel(options['x_label'])
             self.ax.set_ylabel(options['y_label'])
-            #self.ajustar_guardar_cerrar_graph(f'OOPVersion/generated_graphs/C&D_Currents_{speed}mVs.png') #graph
-            #self.save_data(data1[0], text=f'OOPVersion/generated_data/C&D_Currents_UExp_results_{speed}mVs.txt') # x1
-            #self.save_data(data1[1], text=f'OOPVersion/generated_data/C&D_Currents_IExp_results_{speed}mVs.txt') # y1
-            #self.save_data(data2[0], text=f'OOPVersion/generated_data/C&D_Currents_U_mVs.txt') # x (1&2) para todas las velocidades.
-            #self.save_data(data2[1], text=f'OOPVersion/generated_data/C&D_Currents_Imodelpos_{speed}mVs.txt') # y1
-            #self.save_data(data3[1], text=f'OOPVersion/generated_data/C&D_Currents_Imodelneg_{speed}mVs.txt') # y1
+            self.ajustar_guardar_cerrar_graph(f'OOPVersion/generated_graphs/cyclic_voltammograms_{speed}mVs.png') #graph
+            self.save_data(data1[0], text=f'OOPVersion/generated_data/cyclic_voltammograms_UExp_results_{speed}mVs.txt') # x1
+            self.save_data(data1[1], text=f'OOPVersion/generated_data/cyclic_voltammograms_IExp_results_{speed}mVs.txt') # y1
+            self.save_data(data2[0], text=f'OOPVersion/generated_data/cyclic_voltammograms_U_mVs.txt') # x (1&2) para todas las velocidades.
+            self.save_data(data2[1], text=f'OOPVersion/generated_data/cyclic_voltammograms_Imodelpos_{speed}mVs.txt') # y1
+            self.save_data(data3[1], text=f'OOPVersion/generated_data/cyclic_voltammograms_Imodelneg_{speed}mVs.txt') # y1
         elif self.label in capacitive_current_names_dict:
             options = capacitive_current_names_dict[self.label]
             speed = options['speed']
@@ -162,12 +161,12 @@ class ZoomableGraph:
             self.figure.legend(options['legend'])
             self.ax.set_xlabel(options['x_label'])
             self.ax.set_ylabel(options['y_label'])
-            # self.ajustar_guardar_cerrar_graph(f'OOPVersion/generated_graphs/Capacitive_Current_{speed}mVs.png') #graph
-            # self.save_data(data1[0], text=f'OOPVersion/generated_data/Capacitive_Current_UExp_results_{speed}mVs.txt') # x1
-            # self.save_data(data1[1], text=f'OOPVersion/generated_data/Capacitive_Current_IExp_results_{speed}mVs.txt') # y1
-            # self.save_data(data2[0], text=f'OOPVersion/generated_data/Capacitive_Current_U_mVs.txt') # x (1&2) para todas las velocidades.
-            # self.save_data(data2[1], text=f'OOPVersion/generated_data/Capacitive_Current_Imodel_1pos_{speed}mVs.txt') # y1
-            # self.save_data(data3[1], text=f'OOPVersion/generated_data/Capacitive_Current_Imodel_1neg_{speed}mVs.txt') # y1
+            self.ajustar_guardar_cerrar_graph(f'OOPVersion/generated_graphs/Capacitive_Current_{speed}mVs.png') #graph
+            self.save_data(data1[0], text=f'OOPVersion/generated_data/Capacitive_Current_UExp_results_{speed}mVs.txt') # x1
+            self.save_data(data1[1], text=f'OOPVersion/generated_data/Capacitive_Current_IExp_results_{speed}mVs.txt') # y1
+            self.save_data(data2[0], text=f'OOPVersion/generated_data/Capacitive_Current_U_mVs.txt') # x (1&2) para todas las velocidades.
+            self.save_data(data2[1], text=f'OOPVersion/generated_data/Capacitive_Current_Imodel_1pos_{speed}mVs.txt') # y1
+            self.save_data(data3[1], text=f'OOPVersion/generated_data/Capacitive_Current_Imodel_1neg_{speed}mVs.txt') # y1
         elif self.label in diffusive_current_names_dict:
             options = diffusive_current_names_dict[self.label]
             speed = options['speed']
@@ -184,12 +183,23 @@ class ZoomableGraph:
             self.figure.legend(options['legend'])
             self.ax.set_xlabel(options['x_label'])
             self.ax.set_ylabel(options['y_label'])
-            # self.ajustar_guardar_cerrar_graph(f'OOPVersion/generated_graphs/Diffusive_Current_{speed}mVs.png') #graph
-            # self.save_data(data1[0], text=f'OOPVersion/generated_data/Diffusive_Current_UExp_results_{speed}mVs.txt') # x1
-            # self.save_data(data1[1], text=f'OOPVersion/generated_data/Diffusive_Current_IExp_results_{speed}mVs.txt') # y1
-            # self.save_data(data2[0], text=f'OOPVersion/generated_data/Diffusive_Current_U_mVs.txt') # x (1&2) para todas las velocidades.
-            # self.save_data(data2[1], text=f'OOPVersion/generated_data/Diffusive_Current_Imodel_2pos_{speed}mVs.txt') # y1
-            # self.save_data(data3[1], text=f'OOPVersion/generated_data/Diffusive_Current_Imodel_2neg_{speed}mVs.txt') # y1
+            self.ajustar_guardar_cerrar_graph(f'OOPVersion/generated_graphs/Diffusive_Current_{speed}mVs.png') #graph
+            self.save_data(data1[0], text=f'OOPVersion/generated_data/Diffusive_Current_UExp_results_{speed}mVs.txt') # x1
+            self.save_data(data1[1], text=f'OOPVersion/generated_data/Diffusive_Current_IExp_results_{speed}mVs.txt') # y1
+            self.save_data(data2[0], text=f'OOPVersion/generated_data/Diffusive_Current_U_mVs.txt') # x (1&2) para todas las velocidades.
+            self.save_data(data2[1], text=f'OOPVersion/generated_data/Diffusive_Current_Imodel_2pos_{speed}mVs.txt') # y1
+            self.save_data(data3[1], text=f'OOPVersion/generated_data/Diffusive_Current_Imodel_2neg_{speed}mVs.txt') # y1
+        elif self.label == pestañas_superiores[6]:
+            self.ax.plot(parameterB_values.U, parameterB_values.rbpos, 'r', label='b oxidation')
+            self.ax.plot(parameterB_values.U, parameterB_values.rbneg, 'b', label='b reduction')
+            self.ax.set_xlabel(REFERENCE_ELECTRODE)
+            self.ax.set_ylabel('b parameter')
+            self.ax.set_title('b - oxidation & reduction')
+            self.ax.legend()
+            self.ajustar_guardar_cerrar_graph('OOPVersion/generated_graphs/B_Parameter_Oxidation_Reduction.png') #graph
+            self.save_data(parameterB_values.U, text=f'OOPVersion/generated_data/B_Parameter_U.txt') # x (1&2)
+            self.save_data(parameterB_values.rbpos, text=f'OOPVersion/generated_data/B_Parameter_rbpos.txt') # y1
+            self.save_data(parameterB_values.rbneg, text=f'OOPVersion/generated_data/B_Parameter_rbneg.txt') # y2
         elif self.label in diffusive_capacitive_charges_names_dict:
             options = diffusive_capacitive_charges_names_dict[self.label]
             speed = options['speed']
@@ -206,11 +216,11 @@ class ZoomableGraph:
             self.ax.legend()
             self.ax.set_xlabel(options['x_label'])
             self.ax.set_ylabel(options['y_label'])
-            # self.ajustar_guardar_cerrar_graph(f'OOPVersion/generated_graphs/C&D_Charges_{speed}mVs.png') #graph
-            # self.save_data(data1[0], text='OOPVersion/generated_data/C&D_Charges_x_positions_mVs.txt') # x (1,2&3) para todas las velocidades
-            # self.save_data(data1[1], text=f'OOPVersion/generated_data/C&D_Charges_Pseudocapacitive_{speed}mVs.txt') # y1 (Bottom)
-            # self.save_data(data2[1], text=f'OOPVersion/generated_data/C&D_Charges_Diffusive_{speed}mVs.txt') # y2 (Middle)
-            # self.save_data(data3[1], text=f'OOPVersion/generated_data/C&D_Charges_DoubleLayer_{speed}mVs.txt') # y3 (Top)
+            self.ajustar_guardar_cerrar_graph(f'OOPVersion/generated_graphs/deconvolution_specific_charge_vs_scan_rate_{speed}mVs.png') #graph
+            self.save_data(data1[0], text='OOPVersion/generated_data/deconvolution_specific_charge_vs_scan_rate_x_positions_mVs.txt') # x (1,2&3) para todas las velocidades
+            self.save_data(data1[1], text=f'OOPVersion/generated_data/deconvolution_specific_charge_vs_scan_rate_Pseudocapacitive_{speed}mVs.txt') # y1 (Bottom)
+            self.save_data(data2[1], text=f'OOPVersion/generated_data/deconvolution_specific_charge_vs_scan_rate__Diffusive_{speed}mVs.txt') # y2 (Middle)
+            self.save_data(data3[1], text=f'OOPVersion/generated_data/deconvolution_specific_charge_vs_scan_rate_DoubleLayer_{speed}mVs.txt') # y3 (Top)
         elif self.label == pestañas_superiores[8]:
             self.barras_transpuestas = scharge_vs_sspeed_values.barras_transpuestas
             self.bars = self.ax.bar(range(len(self.barras_transpuestas[0])), self.barras_transpuestas[0])
@@ -223,10 +233,10 @@ class ZoomableGraph:
             self.ax.set_xticklabels(speeds)
             self.ax.set_ylabel('Specific Charge (C/g)')
             self.ax.legend(['Pseudocapacitive', 'Diffusive', 'Double Layer'])
-            # self.ajustar_guardar_cerrar_graph('OOPVersion/generated_graphs/Specific_Charge_VS_Sweed_Speed.png')
-            # self.save_data(self.barras_transpuestas[0], text='OOPVersion/generated_data/Specific_Charge_VS_Sweed_Speed_Pseudocapacitive.txt') # y1 (Bottom)
-            # self.save_data(self.barras_transpuestas[1], text='OOPVersion/generated_data/Specific_Charge_VS_Sweed_Speed_Diffusive.txt') # y2 (Middle)
-            # self.save_data(self.barras_transpuestas[2], text='OOPVersion/generated_data/Specific_Charge_VS_Sweed_Speed_DoubleLayer.txt') # y3 (Top)
+            self.ajustar_guardar_cerrar_graph('OOPVersion/generated_graphs/specific_charge_vs_scan_rate.png')
+            self.save_data(self.barras_transpuestas[0], text='OOPVersion/generated_data/specific_charge_vs_scan_rate_Pseudocapacitive.txt') # y1 (Bottom)
+            self.save_data(self.barras_transpuestas[1], text='OOPVersion/generated_data/specific_charge_vs_scan_rate_Diffusive.txt') # y2 (Middle)
+            self.save_data(self.barras_transpuestas[2], text='OOPVersion/generated_data/specific_charge_vs_scan_rate_DoubleLayer.txt') # y3 (Top)
         elif self.label == pestañas_superiores[9]:
             self.percentage_bars_transposed = percentage_specific_charge_values.percentage_bars_transposed
             self.bars = self.ax.bar(range(len(self.percentage_bars_transposed[0])), self.percentage_bars_transposed[0])
@@ -239,46 +249,57 @@ class ZoomableGraph:
             self.ax.set_xticklabels(speeds)
             self.ax.set_ylabel('Charge (%)')
             self.ax.legend(['Pseudocapacitive', 'Diffusive', 'Double Layer'])
-            # self.ajustar_guardar_cerrar_graph('OOPVersion/generated_graphs/Percentage_of_Specific_Charge.png')
-            # self.save_data(self.percentage_bars_transposed[0], text='OOPVersion/generated_data/Percentage_of_Specific_Charge_Pseudocapacitive.txt') # y1 (Bottom)
-            # self.save_data(self.percentage_bars_transposed[1], text='OOPVersion/generated_data/Percentage_of_Specific_Charge_Diffusive.txt') # y2 (Middle)
-            # self.save_data(self.percentage_bars_transposed[2], text='OOPVersion/generated_data/Percentage_of_Specific_Charge_DoubleLayer.txt') # y3 (Top)
-        elif self.label == pestañas_superiores[10]:
+            self.ajustar_guardar_cerrar_graph('OOPVersion/generated_graphs/Percentage_of_specific_charge_vs_scan_rate.png')
+            self.save_data(self.percentage_bars_transposed[0], text='OOPVersion/generated_data/Percentage_of_specific_charge_vs_scan_rate_Pseudocapacitive.txt') # y1 (Bottom)
+            self.save_data(self.percentage_bars_transposed[1], text='OOPVersion/generated_data/Percentage_of_specific_charge_vs_scan_rate_Diffusive.txt') # y2 (Middle)
+            self.save_data(self.percentage_bars_transposed[2], text='OOPVersion/generated_data/Percentage_of_specific_charge_vs_scan_rate_DoubleLayer.txt') # y3 (Top)
+        elif self.label in massogram_names_dict: #self.label == pestañas_superiores[10]:
             # Get values
-            self.U = masogram_values.U
-            self.masspos = masogram_values.masspos
+            options = massogram_names_dict[self.label]
+            speed = options['speed']
+            self.U = options['data_x_blue']
+            self.masspos = options['data_y_blue_1']
             self.ax.plot(self.U, self.masspos * 1e6, 'b', linewidth=3, label='mass (ug)')
             # Customize the plot
             self.ax.set_xlabel(REFERENCE_ELECTRODE)
             self.ax.set_ylabel(MASS_UG, color='b')
             self.ax.tick_params('y', colors='b')
+
             # Get values
-            self.massneg = masogram_values.massneg
+            self.massneg = options['data_y_blue_2']
             # Add the negative data series to the first data series (blue)
             self.ax.plot(self.U, self.massneg * 1e6, 'b', linewidth=3)
             # Create the second data series (red)
             self.ax2 = self.ax.twinx()
-            self.ax2.plot(masogram_values.UExp, masogram_values.IExp, 'r', linewidth=3, label=DENSIDAD_DE_CORRIENTE) # x=UExp y=IExp
+            self.UExp = options['data_x_red']
+            self.IExp = options['data_y_red']
+            self.ax2.plot(self.UExp, self.IExp, 'r', linewidth=3, label=DENSIDAD_DE_CORRIENTE) # x=UExp y=IExp
             self.ax2.set_ylabel(DENSIDAD_DE_CORRIENTE, color='r')
             self.ax2.tick_params('y', colors='r')
+
+            self.ax.set_title(options['title'])
+
             #Final
-            # self.ajustar_guardar_cerrar_graph('OOPVersion/generated_graphs/Masogram.png') #graph
-            # self.save_data(self.U, text='OOPVersion/generated_data/Masogram_U.txt') # x(1&2)
-            # self.save_data(self.masspos, text='OOPVersion/generated_data/Masogram_masspos.txt') # y1
-            # self.save_data(self.massneg * 1e6, text='OOPVersion/generated_data/Masogram_massneg.txt') # y2
-            # self.save_data(masogram_values.UExp, text='OOPVersion/generated_data/Masogram_UExp.txt') # x3
-            # self.save_data(masogram_values.IExp, text='OOPVersion/generated_data/Masogram_IExp.txt') # y3
-        elif self.label == pestañas_superiores[11]:
+            self.ajustar_guardar_cerrar_graph(f'OOPVersion/generated_graphs/Massograms_{speed}mVs.png') #graph
+            self.save_data(self.U, text=f'OOPVersion/generated_data/Massograms_U_{speed}mVs.txt') # x(1&2)
+            self.save_data(self.masspos, text=f'OOPVersion/generated_data/Massograms_masspos_{speed}mVs.txt') # y1
+            self.save_data(self.massneg * 1e6, text=f'OOPVersion/generated_data/Massograms_massneg_{speed}mVs.txt') # y2
+            self.save_data(self.UExp, text=f'OOPVersion/generated_data/Massograms_UExp_{speed}mVs.txt') # x3
+            self.save_data(self.IExp, text=f'OOPVersion/generated_data/Massograms_IExp_{speed}mVs.txt') # y3
+        elif self.label in insertogram_mass_names_dict: #self.label == pestañas_superiores[11]:
             # Get values
-            self.U = insertogram_values.U
-            self.inser = insertogram_values.inser
+            options = insertogram_mass_names_dict[self.label]
+            speed = options['speed']
+            self.U = options['data_x']
+            self.inser = options['data_y']
             self.ax.plot(self.U, self.inser, 'b', linewidth=1)
-            self.ax.set_xlabel(REFERENCE_ELECTRODE)
-            self.ax.set_ylabel('Active Thickness (cm)')
-            # #Final
-            # self.ajustar_guardar_cerrar_graph('OOPVersion/generated_graphs/Insertogram.png') #graph
-            # self.save_data(self.U, text='OOPVersion/generated_data/Insertogram_U.txt') # x
-            # self.save_data(self.inser, text='OOPVersion/generated_data/Insertogram_masspos.txt') # y
+            self.ax.set_xlabel(options['x_label'])
+            self.ax.set_ylabel(options['y_label'])
+            self.ax.set_title(options['title'])
+            #Final
+            self.ajustar_guardar_cerrar_graph(f'OOPVersion/generated_graphs/Active_Thickness_{speed}mVs.png') #graph
+            self.save_data(self.U, text=f'OOPVersion/generated_data/Active_Thickness_U.txt') # x
+            self.save_data(self.inser, text=f'OOPVersion/generated_data/Active_Thickness_inser_{speed}mVs.txt', fmt='%0.15f') # y
         elif self.label in diffusive_capacitive_positive_charge_names_dict:
             options = diffusive_capacitive_positive_charge_names_dict[self.label]
             speed = options['speed']
@@ -295,11 +316,11 @@ class ZoomableGraph:
             self.ax.legend()
             self.ax.set_xlabel(options['x_label'])
             self.ax.set_ylabel(options['y_label'])
-            # self.ajustar_guardar_cerrar_graph(f'OOPVersion/generated_graphs/C&D_Positive_Charge_{speed}mVs.png') #graph
-            # self.save_data(data1[0], text='OOPVersion/generated_data/C&D_Positive_Charge_x_positions_mVs.txt') # x (1,2&3) para todas las velocidades
-            # self.save_data(data1[1], text=f'OOPVersion/generated_data/C&D_Positive_Charge_Pseudocapacitive_{speed}mVs.txt') # y1 (Bottom)
-            # self.save_data(data2[1], text=f'OOPVersion/generated_data/C&D_Positive_Charge_Diffusive_{speed}mVs.txt') # y2 (Middle)
-            # self.save_data(data3[1], text=f'OOPVersion/generated_data/C&D_Positive_Charge_DoubleLayer_{speed}mVs.txt') # y3 (Top)
+            self.ajustar_guardar_cerrar_graph(f'OOPVersion/generated_graphs/deconvolution_Positive_Charge_{speed}mVs.png') #graph
+            self.save_data(data1[0], text='OOPVersion/generated_data/deconvolution_Positive_Charge_x_positions_mVs.txt') # x (1,2&3) para todas las velocidades
+            self.save_data(data1[1], text=f'OOPVersion/generated_data/deconvolution_Positive_Charge_Pseudocapacitive_{speed}mVs.txt') # y1 (Bottom)
+            self.save_data(data2[1], text=f'OOPVersion/generated_data/deconvolution_Positive_Charge_Diffusive_{speed}mVs.txt') # y2 (Middle)
+            self.save_data(data3[1], text=f'OOPVersion/generated_data/deconvolution_Positive_Charge_DoubleLayer_{speed}mVs.txt') # y3 (Top)
         elif self.label == pestañas_superiores[13]:
             self.barras_transpuestas = scharge_vs_sspeed_pos_values.barras_transpuestas
             self.bars = self.ax.bar(range(len(self.barras_transpuestas[0])), self.barras_transpuestas[0])
@@ -312,10 +333,10 @@ class ZoomableGraph:
             self.ax.set_xticklabels(speeds)
             self.ax.set_ylabel('Specific Charge (C/g)')
             self.ax.legend(['Pseudocapacitive', 'Diffusive', 'Double Layer'])
-            # self.ajustar_guardar_cerrar_graph('OOPVersion/generated_graphs/Specific_Charge_VS_Sweed_Speed_Pos.png')
-            # self.save_data(self.barras_transpuestas[0], text='OOPVersion/generated_data/Specific_Charge_VS_Sweed_Speed_Pseudocapacitive_Pos.txt') # y1 (Bottom)
-            # self.save_data(self.barras_transpuestas[1], text='OOPVersion/generated_data/Specific_Charge_VS_Sweed_Speed_Diffusive_Pos.txt') # y2 (Middle)
-            # self.save_data(self.barras_transpuestas[2], text='OOPVersion/generated_data/Specific_Charge_VS_Sweed_Speed_DoubleLayer_Pos.txt') # y3 (Top)
+            self.ajustar_guardar_cerrar_graph('OOPVersion/generated_graphs/specific_charge_vs_scan_rate_Pos.png')
+            self.save_data(self.barras_transpuestas[0], text='OOPVersion/generated_data/specific_charge_vs_scan_rate_Pseudocapacitive_Pos.txt') # y1 (Bottom)
+            self.save_data(self.barras_transpuestas[1], text='OOPVersion/generated_data/specific_charge_vs_scan_rate_Diffusive_Pos.txt') # y2 (Middle)
+            self.save_data(self.barras_transpuestas[2], text='OOPVersion/generated_data/specific_charge_vs_scan_rate_DoubleLayer_Pos.txt') # y3 (Top)
         elif self.label == pestañas_superiores[14]:
             self.percentage_bars_transposed = percentage_specific_charge_pos_values.percentage_bars_transposed
             self.bars = self.ax.bar(range(len(self.percentage_bars_transposed[0])), self.percentage_bars_transposed[0])
@@ -328,10 +349,24 @@ class ZoomableGraph:
             self.ax.set_xticklabels(speeds)
             self.ax.set_ylabel('Charge (%)')
             self.ax.legend(['Pseudocapacitive', 'Diffusive', 'Double Layer'])
-            # self.ajustar_guardar_cerrar_graph('OOPVersion/generated_graphs/Percentage_of_Specific_Charge_Pos.png')
-            # self.save_data(self.percentage_bars_transposed[0], text='OOPVersion/generated_data/Percentage_of_Specific_Charge_Pseudocapacitive_Pos.txt') # y1 (Bottom)
-            # self.save_data(self.percentage_bars_transposed[1], text='OOPVersion/generated_data/Percentage_of_Specific_Charge_Diffusive_Pos.txt') # y2 (Middle)
-            # self.save_data(self.percentage_bars_transposed[2], text='OOPVersion/generated_data/Percentage_of_Specific_Charge_DoubleLayer_Pos.txt') # y3 (Top)
+            self.ajustar_guardar_cerrar_graph('OOPVersion/generated_graphs/Percentage_of_Specific_Charge_Pos.png')
+            self.save_data(self.percentage_bars_transposed[0], text='OOPVersion/generated_data/Percentage_of_Specific_Charge_Pseudocapacitive_Pos.txt') # y1 (Bottom)
+            self.save_data(self.percentage_bars_transposed[1], text='OOPVersion/generated_data/Percentage_of_Specific_Charge_Diffusive_Pos.txt') # y2 (Middle)
+            self.save_data(self.percentage_bars_transposed[2], text='OOPVersion/generated_data/Percentage_of_Specific_Charge_DoubleLayer_Pos.txt') # y3 (Top)
+        elif self.label in insertogram_mass_pos_names_dict: #self.label == pestañas_superiores[11]:
+            # Get values
+            options = insertogram_mass_pos_names_dict[self.label]
+            speed = options['speed']
+            self.U = options['data_x']
+            self.inser = options['data_y']
+            self.ax.plot(self.U, self.inser, 'b', linewidth=1)
+            self.ax.set_xlabel(options['x_label'])
+            self.ax.set_ylabel(options['y_label'])
+            self.ax.set_title(options['title'])
+            #Final
+            self.ajustar_guardar_cerrar_graph(f'OOPVersion/generated_graphs/Active_Thickness_Positive_{speed}mVs.png') #graph
+            self.save_data(self.U, text=f'OOPVersion/generated_data/Active_Thickness_U_Positive.txt') # x
+            self.save_data(self.inser, text=f'OOPVersion/generated_data/Active_Thickness_inser_Positive_{speed}mVs.txt', fmt='%0.15f') # y
         elif self.label in diffusive_capacitive_negative_charge_names_dict:
             options = diffusive_capacitive_negative_charge_names_dict[self.label]
             speed = options['speed']
@@ -348,11 +383,11 @@ class ZoomableGraph:
             self.ax.legend()
             self.ax.set_xlabel(options['x_label'])
             self.ax.set_ylabel(options['y_label'])
-            # self.ajustar_guardar_cerrar_graph(f'OOPVersion/generated_graphs/C&D_Negative_Charge_{speed}mVs.png') #graph
-            # self.save_data(data1[0], text='OOPVersion/generated_data/C&D_Negative_Charge_x_positions_mVs.txt') # x (1,2&3) para todas las velocidades
-            # self.save_data(data1[1], text=f'OOPVersion/generated_data/C&D_Negative_Charge_Pseudocapacitive_{speed}mVs.txt') # y1 (Bottom)
-            # self.save_data(data2[1], text=f'OOPVersion/generated_data/C&D_Negative_Charge_Diffusive_{speed}mVs.txt') # y2 (Middle)
-            # self.save_data(data3[1], text=f'OOPVersion/generated_data/C&D_Negative_Charge_DoubleLayer_{speed}mVs.txt') # y3 (Top)
+            self.ajustar_guardar_cerrar_graph(f'OOPVersion/generated_graphs/deconvolution_Negative_Charge_{speed}mVs.png') #graph
+            self.save_data(data1[0], text='OOPVersion/generated_data/deconvolution_Negative_Charge_x_positions_mVs.txt') # x (1,2&3) para todas las velocidades
+            self.save_data(data1[1], text=f'OOPVersion/generated_data/deconvolution_Negative_Charge_Pseudocapacitive_{speed}mVs.txt') # y1 (Bottom)
+            self.save_data(data2[1], text=f'OOPVersion/generated_data/deconvolution_Negative_Charge_Diffusive_{speed}mVs.txt') # y2 (Middle)
+            self.save_data(data3[1], text=f'OOPVersion/generated_data/deconvolution_Negative_Charge_DoubleLayer_{speed}mVs.txt') # y3 (Top)
         elif self.label == pestañas_superiores[16]:
             self.barras_transpuestas = scharge_vs_sspeed_neg_values.barras_transpuestas
             self.bars = self.ax.bar(range(len(self.barras_transpuestas[0])), self.barras_transpuestas[0])
@@ -365,10 +400,10 @@ class ZoomableGraph:
             self.ax.set_xticklabels(speeds)
             self.ax.set_ylabel('Specific Charge (C/g)')
             self.ax.legend(['Pseudocapacitive', 'Diffusive', 'Double Layer'])
-            # self.ajustar_guardar_cerrar_graph('OOPVersion/generated_graphs/Specific_Charge_VS_Sweed_Speed_Neg.png')
-            # self.save_data(self.barras_transpuestas[0], text='OOPVersion/generated_data/Specific_Charge_VS_Sweed_Speed_Pseudocapacitive_Neg.txt') # y1 (Bottom)
-            # self.save_data(self.barras_transpuestas[1], text='OOPVersion/generated_data/Specific_Charge_VS_Sweed_Speed_Diffusive_Neg.txt') # y2 (Middle)
-            # self.save_data(self.barras_transpuestas[2], text='OOPVersion/generated_data/Specific_Charge_VS_Sweed_Speed_DoubleLayer_Neg.txt') # y3 (Top)
+            self.ajustar_guardar_cerrar_graph('OOPVersion/generated_graphs/specific_charge_vs_scan_rate_Neg.png')
+            self.save_data(self.barras_transpuestas[0], text='OOPVersion/generated_data/specific_charge_vs_scan_rate_Pseudocapacitive_Neg.txt') # y1 (Bottom)
+            self.save_data(self.barras_transpuestas[1], text='OOPVersion/generated_data/specific_charge_vs_scan_rate_Diffusive_Neg.txt') # y2 (Middle)
+            self.save_data(self.barras_transpuestas[2], text='OOPVersion/generated_data/specific_charge_vs_scan_rate_DoubleLayer_Neg.txt') # y3 (Top)
         elif self.label == pestañas_superiores[17]:
             self.percentage_bars_transposed = percentage_specific_charge_neg_values.percentage_bars_transposed
             self.bars = self.ax.bar(range(len(self.percentage_bars_transposed[0])), self.percentage_bars_transposed[0])
@@ -381,23 +416,37 @@ class ZoomableGraph:
             self.ax.set_xticklabels(speeds)
             self.ax.set_ylabel('Charge (%)')
             self.ax.legend(['Pseudocapacitive', 'Diffusive', 'Double Layer'])
-            # self.ajustar_guardar_cerrar_graph('OOPVersion/generated_graphs/Percentage_of_Specific_Charge_Neg.png')
-            # self.save_data(self.percentage_bars_transposed[0], text='OOPVersion/generated_data/Percentage_of_Specific_Charge_Pseudocapacitive_Neg.txt') # y1 (Bottom)
-            # self.save_data(self.percentage_bars_transposed[1], text='OOPVersion/generated_data/Percentage_of_Specific_Charge_Diffusive_Neg.txt') # y2 (Middle)
-            # self.save_data(self.percentage_bars_transposed[2], text='OOPVersion/generated_data/Percentage_of_Specific_Charge_DoubleLayer_Neg.txt') # y3 (Top)
-
+            self.ajustar_guardar_cerrar_graph('OOPVersion/generated_graphs/Percentage_of_Specific_Charge_Neg.png')
+            self.save_data(self.percentage_bars_transposed[0], text='OOPVersion/generated_data/Percentage_of_Specific_Charge_Pseudocapacitive_Neg.txt') # y1 (Bottom)
+            self.save_data(self.percentage_bars_transposed[1], text='OOPVersion/generated_data/Percentage_of_Specific_Charge_Diffusive_Neg.txt') # y2 (Middle)
+            self.save_data(self.percentage_bars_transposed[2], text='OOPVersion/generated_data/Percentage_of_Specific_Charge_DoubleLayer_Neg.txt') # y3 (Top)
+        elif self.label in insertogram_mass_neg_names_dict: #self.label == pestañas_superiores[11]:
+            # Get values
+            options = insertogram_mass_neg_names_dict[self.label]
+            speed = options['speed']
+            self.U = options['data_x']
+            self.inser = options['data_y']
+            self.ax.plot(self.U, self.inser, 'b', linewidth=1)
+            self.ax.set_xlabel(options['x_label'])
+            self.ax.set_ylabel(options['y_label'])
+            self.ax.set_title(options['title'])
+            #Final
+            self.ajustar_guardar_cerrar_graph(f'OOPVersion/generated_graphs/Active_Thickness_Negative_{speed}mVs.png') #graph
+            self.save_data(self.U, text=f'OOPVersion/generated_data/Active_Thickness_U_Negative.txt') # x
+            self.save_data(self.inser, text=f'OOPVersion/generated_data/Active_Thickness_inser_Negative_{speed}mVs.txt', fmt='%0.15f') # y
         if y is not None:
             self.ax.set_title(self.label)
             self.canvas.draw()
 
     def ajustar_guardar_cerrar_graph(self, texto_guardado):
-        plt.tight_layout()
-        plt.savefig(texto_guardado)
-        plt.subplots_adjust(left=0.125, bottom=0.1, right=0.9, top=0.9, wspace=0.2, hspace=0.2)
+        #plt.tight_layout()
+        #plt.savefig(texto_guardado)
+        #plt.subplots_adjust(left=0.125, bottom=0.1, right=0.9, top=0.9, wspace=0.2, hspace=0.2)
         plt.close(self.figure)
     
-    def save_data(self, data, text):
-        np.savetxt(text, data, fmt='%f')
+    def save_data(self, data, text, fmt='%f'):
+        #np.savetxt(text, data, fmt=fmt)
+        print('Hello')
 
 class PestañasVerticales(ttk.Frame):
     def __init__(self, master=None, *args, **kwargs):
@@ -408,10 +457,9 @@ class PestañasVerticales(ttk.Frame):
         # Create a style object
         style = ttk.Style(self)
 
-        style.configure('Treeview', rowheight=36)
+        style.configure('Treeview', rowheight=40)
         self.tree = ttk.Treeview(self, selectmode='browse')
         self.tree.pack(side='left', fill='y', ipadx=3)
-
         self.scroll = ttk.Scrollbar(self, orient="vertical", command=self.tree.yview)
         self.scroll.pack(side='left', fill='y')
         self.tree.configure(yscrollcommand=self.scroll.set)
@@ -676,7 +724,7 @@ def modelo1_page():
 
     # Crear el segundo frame dentro del frame interior
     frame2 = Frame(inner_frame, bg='gray64')#ancho x alto
-    frame2.config(width=4000, height=4000)
+    frame2.config(width=200, height=700)
     frame2.grid(column=1, row=0, sticky='nsew')
 
     
@@ -689,40 +737,44 @@ def modelo1_page():
     normalizacion_tab = ttk.Frame(app)
     oxidation_tab = ttk.Frame(app)
     reduction_tab = ttk.Frame(app)
-    parameterB_tab = ttk.Frame(app)
     diffusive_capacitive_currents_tab = ttk.Frame(app)
     capacitive_current_tab = ttk.Frame(app)
     diffusive_current_tab = ttk.Frame(app)
+    parameterB_tab = ttk.Frame(app)
     diffusive_capacitive_charges_tab = ttk.Frame(app)
     scharge_vs_sspeed_tab = ttk.Frame(app)
     percentage_scharge_tab = ttk.Frame(app)
     masogram_tab = ttk.Frame(app)
-    insertogram_tab = ttk.Frame(app)
+    insertogram_mass_ver_tab = ttk.Frame(app)
     diffusive_capacitive_positive_charge_tab = ttk.Frame(app)
     scharge_vs_sspeed_pos_tab = ttk.Frame(app)
     percentage_scharge_pos_tab = ttk.Frame(app)
+    insertogram_mass_ver_pos_tab = ttk.Frame(app)
     diffusive_capacitive_negative_charge_tab = ttk.Frame(app)
     scharge_vs_sspeed_neg_tab = ttk.Frame(app)
     percentage_scharge_neg_tab = ttk.Frame(app)
+    insertogram_mass_ver_neg_tab = ttk.Frame(app)
 
     app.add(normalizacion_tab, pestañas_superiores[0])
     app.add(oxidation_tab, pestañas_superiores[1])
     app.add(reduction_tab, pestañas_superiores[2])
-    app.add(parameterB_tab, pestañas_superiores[3])
-    app.add(diffusive_capacitive_currents_tab, pestañas_superiores[4])
-    app.add(capacitive_current_tab, pestañas_superiores[5])
-    app.add(diffusive_current_tab, pestañas_superiores[6])
+    app.add(diffusive_capacitive_currents_tab, pestañas_superiores[3])
+    app.add(capacitive_current_tab, pestañas_superiores[4])
+    app.add(diffusive_current_tab, pestañas_superiores[5])
+    app.add(parameterB_tab, pestañas_superiores[6])
     app.add(diffusive_capacitive_charges_tab, pestañas_superiores[7])
     app.add(scharge_vs_sspeed_tab, pestañas_superiores[8])
     app.add(percentage_scharge_tab, pestañas_superiores[9])
     app.add(masogram_tab, pestañas_superiores[10])
-    app.add(insertogram_tab, pestañas_superiores[11])
+    app.add(insertogram_mass_ver_tab, pestañas_superiores[11])
     app.add(diffusive_capacitive_positive_charge_tab, pestañas_superiores[12])
     app.add(scharge_vs_sspeed_pos_tab, pestañas_superiores[13])
     app.add(percentage_scharge_pos_tab, pestañas_superiores[14])
-    app.add(diffusive_capacitive_negative_charge_tab, pestañas_superiores[15])
-    app.add(scharge_vs_sspeed_neg_tab, pestañas_superiores[16])
-    app.add(percentage_scharge_neg_tab, pestañas_superiores[17])
+    app.add(insertogram_mass_ver_pos_tab, pestañas_superiores[15])
+    app.add(diffusive_capacitive_negative_charge_tab, pestañas_superiores[16])
+    app.add(scharge_vs_sspeed_neg_tab, pestañas_superiores[17])
+    app.add(percentage_scharge_neg_tab, pestañas_superiores[18])
+    app.add(insertogram_mass_ver_neg_tab, pestañas_superiores[19])
 
     # Crear notebooks adicionales dentro de cada pestaña para alojar los gráficos específicos
     normalizacion_notebook = ttk.Notebook(normalizacion_tab)
@@ -740,11 +792,23 @@ def modelo1_page():
     diffusive_capacitive_charges_notebook = ttk.Notebook(diffusive_capacitive_charges_tab)
     diffusive_capacitive_charges_notebook.pack(fill=tk.BOTH, expand=True)
 
+    massogram_notebook = ttk.Notebook(masogram_tab)
+    massogram_notebook.pack(fill=tk.BOTH, expand=True)
+
+    insertogram_mass_ver_notebook = ttk.Notebook(insertogram_mass_ver_tab)
+    insertogram_mass_ver_notebook.pack(fill=tk.BOTH, expand=True)
+
     diffusive_capacitive_positive_charge_notebook = ttk.Notebook(diffusive_capacitive_positive_charge_tab)
     diffusive_capacitive_positive_charge_notebook.pack(fill=tk.BOTH, expand=True)
 
+    insertogram_mass_ver_pos_notebook = ttk.Notebook(insertogram_mass_ver_pos_tab)
+    insertogram_mass_ver_pos_notebook.pack(fill=tk.BOTH, expand=True)
+
     diffusive_capacitive_negative_charge_notebook = ttk.Notebook(diffusive_capacitive_negative_charge_tab)
     diffusive_capacitive_negative_charge_notebook.pack(fill=tk.BOTH, expand=True)
+
+    insertogram_mass_ver_neg_notebook = ttk.Notebook(insertogram_mass_ver_neg_tab)
+    insertogram_mass_ver_neg_notebook.pack(fill=tk.BOTH, expand=True)
 
     # Crear nombres de pestañas: Velocidades.
     global normalization_names_list # Arreglo para almacenar los nombres generados
@@ -757,27 +821,43 @@ def modelo1_page():
     global diffusive_current_names_dict
     global diffusive_capacitive_charges_names_list
     global diffusive_capacitive_charges_names_dict
+    global massogram_names_list
+    global massogram_names_dict
+    global insertogram_mass_names_list
+    global insertogram_mass_names_dict
     global diffusive_capacitive_positive_charge_names_list
     global diffusive_capacitive_positive_charge_names_dict
+    global insertogram_mass_pos_names_list
+    global insertogram_mass_pos_names_dict
     global diffusive_capacitive_negative_charge_names_list
     global diffusive_capacitive_negative_charge_names_dict
+    global insertogram_mass_neg_names_list
+    global insertogram_mass_neg_names_dict
 
     for num, speed in enumerate(speeds):
         # Generar nombres y agregar al arreglo
         normalization_name = f"{speed} mV/s - {pestañas_superiores[0]}"
         normalization_names_list.append(normalization_name)
-        diffusive_capacitive_currents_name = f"{speed} mV/s - {pestañas_superiores[4]}"
+        diffusive_capacitive_currents_name = f"{speed} mV/s - {pestañas_superiores[3]}"
         diffusive_capacitive_currents_names_list.append(diffusive_capacitive_currents_name)
-        capacitive_current_name = f"{speed} mV/s - {pestañas_superiores[5]}"
+        capacitive_current_name = f"{speed} mV/s - {pestañas_superiores[4]}"
         capacitive_current_names_list.append(capacitive_current_name)
-        diffusive_current_name = f"{speed} mV/s - {pestañas_superiores[6]}"
+        diffusive_current_name = f"{speed} mV/s - {pestañas_superiores[5]}"
         diffusive_current_names_list.append(diffusive_current_name)
         diffusive_capacitive_charges_name = f"{speed} mV/s - {pestañas_superiores[7]}"
         diffusive_capacitive_charges_names_list.append(diffusive_capacitive_charges_name)
+        massogram_name = f"{speed} mV/s - {pestañas_superiores[10]}"
+        massogram_names_list.append(massogram_name)
+        insertogram_mass_name = f"{speed} mV/s - {pestañas_superiores[11]}"
+        insertogram_mass_names_list.append(insertogram_mass_name)
         diffusive_capacitive_positive_charge_name = f"{speed} mV/s - {pestañas_superiores[12]}"
         diffusive_capacitive_positive_charge_names_list.append(diffusive_capacitive_positive_charge_name)
-        diffusive_capacitive_negative_charge_name = f"{speed} mV/s - {pestañas_superiores[15]}"
+        insertogram_mass_pos_name = f"{speed} mV/s - {pestañas_superiores[15]}"
+        insertogram_mass_pos_names_list.append(insertogram_mass_pos_name)
+        diffusive_capacitive_negative_charge_name = f"{speed} mV/s - {pestañas_superiores[16]}"
         diffusive_capacitive_negative_charge_names_list.append(diffusive_capacitive_negative_charge_name)
+        insertogram_mass_neg_name = f"{speed} mV/s - {pestañas_superiores[19]}"
+        insertogram_mass_neg_names_list.append(insertogram_mass_neg_name)
         
         # Para 'normalization'
         normalization_names_dict[normalization_name] = {
@@ -871,6 +951,23 @@ def modelo1_page():
             'x_label': REFERENCE_ELECTRODE,
             'y_label': 'Specific Charge (C/g)',
         }
+        massogram_names_dict[massogram_name] = {
+            'speed': speed,
+            'data_x_blue': masogram_values.U,
+            'data_y_blue_1': masogram_values.masspos_results[num],
+            'data_y_blue_2': masogram_values.massneg_results[num],
+            'data_x_red': masogram_values.UExp,
+            'data_y_red': masogram_values.IExp,
+            'title': f'{speeds[num]} mV/s'
+        }
+        insertogram_mass_names_dict[insertogram_mass_name] = {
+            'speed': speed,
+            'data_x': insertogram_mass_values.U,
+            'data_y': insertogram_mass_values.inser_results[num],
+            'x_label': REFERENCE_ELECTRODE,
+            'y_label': 'Active Thickness (nm)',
+            'title': f'{speeds[num]} mV/s'
+        }
         # Para 'Capacitive & Diffusive Positive Charge'
         diffusive_capacitive_positive_charge_names_dict[diffusive_capacitive_positive_charge_name] = {
             'speed': speed,
@@ -894,6 +991,14 @@ def modelo1_page():
             'x_label': REFERENCE_ELECTRODE,
             'y_label': 'Specific Charge (C/g)',
         }
+        insertogram_mass_pos_names_dict[insertogram_mass_pos_name] = {
+            'speed': speed,
+            'data_x': insertogram_mass_version_charge_pos_values.U,
+            'data_y': insertogram_mass_version_charge_pos_values.inser_results[num],
+            'x_label': REFERENCE_ELECTRODE,
+            'y_label': 'Active Thickness (nm)',
+            'title': f'{speeds[num]} mV/s'
+        }
         # Para 'Capacitive & Diffusive Negative Charge'
         diffusive_capacitive_negative_charge_names_dict[diffusive_capacitive_negative_charge_name] = {
             'speed': speed,
@@ -916,6 +1021,14 @@ def modelo1_page():
             'nbins': 10,
             'x_label': REFERENCE_ELECTRODE,
             'y_label': 'Specific Charge (C/g)',
+        }
+        insertogram_mass_neg_names_dict[insertogram_mass_neg_name] = {
+            'speed': speed,
+            'data_x': insertogram_mass_version_charge_neg_values.U,
+            'data_y': insertogram_mass_version_charge_neg_values.inser_results[num],
+            'x_label': REFERENCE_ELECTRODE,
+            'y_label': 'Active Thickness (nm)',
+            'title': f'{speeds[num]} mV/s'
         }
 
     # Crear gráficos en las pestañas correspondientes
@@ -953,6 +1066,20 @@ def modelo1_page():
 
         graph = ZoomableGraph(tab, diffusive_capacitive_charges_name)
         graph.show()
+    # Massogram
+    for massogram_name in massogram_names_list:
+        tab = ttk.Frame(massogram_notebook)
+        massogram_notebook.add(tab, text=massogram_name) 
+
+        graph = ZoomableGraph(tab, massogram_name)
+        graph.show()
+    # Insertogram (Mass ver.)
+    for insertogram_mass_name in insertogram_mass_names_list:
+        tab = ttk.Frame(insertogram_mass_ver_notebook)
+        insertogram_mass_ver_notebook.add(tab, text=insertogram_mass_name) 
+
+        graph = ZoomableGraph(tab, insertogram_mass_name)
+        graph.show()
     # Pos
     for diffusive_capacitive_positive_charge_name in diffusive_capacitive_positive_charge_names_list:
         tab = ttk.Frame(diffusive_capacitive_positive_charge_notebook)
@@ -960,12 +1087,24 @@ def modelo1_page():
 
         graph = ZoomableGraph(tab, diffusive_capacitive_positive_charge_name)
         graph.show()
+    for insertogram_mass_pos_name in insertogram_mass_pos_names_list:
+        tab = ttk.Frame(insertogram_mass_ver_pos_notebook)
+        insertogram_mass_ver_pos_notebook.add(tab, text=insertogram_mass_pos_name) 
+
+        graph = ZoomableGraph(tab, insertogram_mass_pos_name)
+        graph.show()
     # Neg
     for diffusive_capacitive_negative_charge_name in diffusive_capacitive_negative_charge_names_list:
         tab = ttk.Frame(diffusive_capacitive_negative_charge_notebook)
         diffusive_capacitive_negative_charge_notebook.add(tab, text=diffusive_capacitive_negative_charge_name) 
 
         graph = ZoomableGraph(tab, diffusive_capacitive_negative_charge_name)
+        graph.show()
+    for insertogram_mass_neg_name in insertogram_mass_neg_names_list:
+        tab = ttk.Frame(insertogram_mass_ver_neg_notebook)
+        insertogram_mass_ver_neg_notebook.add(tab, text=insertogram_mass_neg_name) 
+
+        graph = ZoomableGraph(tab, insertogram_mass_neg_name)
         graph.show()
 
     # Otros que no requieren pestañas inferiores
@@ -976,7 +1115,7 @@ def modelo1_page():
     graph = ZoomableGraph(reduction_tab, pestañas_superiores[2])
     graph.show()
     # Parameter B
-    graph = ZoomableGraph(parameterB_tab, pestañas_superiores[3])
+    graph = ZoomableGraph(parameterB_tab, pestañas_superiores[6])
     graph.show()
     # Specific Charge VS Sweed Speed
     graph = ZoomableGraph(scharge_vs_sspeed_tab, pestañas_superiores[8])
@@ -985,11 +1124,8 @@ def modelo1_page():
     graph = ZoomableGraph(percentage_scharge_tab, pestañas_superiores[9])
     graph.show()
     # Masogram
-    graph = ZoomableGraph(masogram_tab, pestañas_superiores[10])
-    graph.show()
-    # Insertogram
-    graph = ZoomableGraph(insertogram_tab, pestañas_superiores[11])
-    graph.show()
+    #graph = ZoomableGraph(masogram_tab, pestañas_superiores[10])
+    #graph.show()
     # Specific Charge VS Sweed Speed (+)
     graph = ZoomableGraph(scharge_vs_sspeed_pos_tab, pestañas_superiores[13])
     graph.show()
