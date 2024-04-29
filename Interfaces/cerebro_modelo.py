@@ -6,6 +6,71 @@ import matplotlib.ticker as mticker
 from matplotlib.ticker import AutoMinorLocator
 from shared import div_win, speeds, reduced_speeds, file_paths, active_mass, DLC, Mmol, mass_elec, mol_weight, electrons, density, surface_area
 
+def obtener_tamaño(lista):
+    tamaño = []
+    while isinstance(lista, list):
+        tamaño.append(len(lista))
+        lista = lista[0]  # Suponiendo que todas las dimensiones tengan la misma longitud
+    return tamaño
+
+def correct_values(coordenadas_x, coordenadas_y, window_size = 5, std_dev_threshold = 1):
+    # Take the absolute values of the x and y coordinates
+    coordenadas_x = np.abs(coordenadas_x)
+    coordenadas_y = np.abs(coordenadas_y)
+
+    # Set the window size and standard deviation threshold
+    #window_size = 5  # adjust this value to change the window size
+    #std_dev_threshold = 1  # adjust this value to change the threshold Original: 2
+
+    # Create a copy of the original y coordinates to store the corrected values
+    corrected_y = coordenadas_y.copy()
+
+    # Iterate over each point in the y coordinates
+    for i in range(len(coordenadas_y)):
+        # Calculate the start and end indices of the window
+        window_start = max(0, i - window_size)
+        window_end = min(len(coordenadas_y), i + window_size + 1)
+
+        # Extract the y values within the window
+        window_y = coordenadas_y[window_start:window_end]
+
+        # Calculate the mean and standard deviation of the y values within the window
+        window_avg = np.mean(window_y)
+        window_std = np.std(window_y)
+
+        # Check if the current y value is more than 2 standard deviations away from the mean
+        if np.abs(coordenadas_y[i] - window_avg) > std_dev_threshold * window_std:
+            # If it is, replace the current y value with the mean of the window
+            corrected_y[i] = window_avg
+
+    # Return the corrected y coordinates
+    return corrected_y
+
+def correct_values_bars(coordenadas_y, window_size=6):
+    # Take the absolute values of the y coordinates
+    coordenadas_y = np.abs(coordenadas_y)
+
+    # Create a copy of the original y coordinates to store the corrected values
+    corrected_y = coordenadas_y.copy()
+
+    # Iterate over each point in the y coordinates
+    for i in range(len(coordenadas_y)):
+        # Calculate the start and end indices of the window
+        window_start = max(0, i - window_size)
+        window_end = min(len(coordenadas_y), i + window_size + 1)
+
+        # Extract the y values within the window
+        window_y = coordenadas_y[window_start:window_end]
+
+        # Calculate the mean of the y values within the window
+        window_avg = np.mean(window_y)
+
+        # Replace the current y value with the mean of the window
+        corrected_y[i] = window_avg
+
+    # Return the corrected y coordinates
+    return corrected_y
+
 # Initialization of Ipos and Ineg matrices with zeros
 Ipos = np.zeros((div_win, len(speeds)))
 Ineg = np.zeros((div_win, len(speeds)))
@@ -55,6 +120,7 @@ class Normalizacion():
             # Ipos[:, i] = np.interp(U, UExppos, IExppos)
             # # Interpolation for Anodic Current
             # Ineg[:, i] = np.interp(U, UExppos, IExppos)
+
             self.UExp_results.append(self.UExp)
             self.IExp_results.append(self.IExp)
 
@@ -141,6 +207,10 @@ class ParameterB():
         # Get the real part of the coefficients
         self.rbpos = np.real([item[0] for item in self.bpos])
         self.rbneg = np.real([item[0] for item in self.bneg])
+        self.rbpos_old = self.rbpos
+        self.rbneg_old = self.rbneg
+        self.rbpos = correct_values(self.U,self.rbpos)
+        self.rbneg = correct_values(self.U,self.rbneg)
 
 UExp_results = []
 IExp_results = []
@@ -192,7 +262,7 @@ class Diffusive_Capacitive_Charges():
         self.time_diff = self.Win / div_win
 
         self.Qc = np.empty(100)
-        self.Qd = np.empty(100)
+        #self.Qd = np.empty(100)
         self.Qct = np.empty(5)
         self.Qdt = np.empty(5)
         self.Qtot = np.empty(5)
@@ -203,18 +273,21 @@ class Diffusive_Capacitive_Charges():
 
         self.x_positions = np.arange(len(self.U))
         self.barrasV_results = []
+        self.Qd_results = []
 
         for j in range(len(speeds)):
 
             self.barrasV = np.empty((100, 3))
+            self.Qd = np.empty(100)
 
             for i in range(len(self.U)):
                 self.Qc[i] = (((abs(Imodel_1pos[i][j]) * self.time_diff) / reduced_speeds[j] + (abs(Imodel_1neg[i][j]) * self.time_diff) / reduced_speeds[j]) / 2) # Carga Capacitiva Q=sum(i) dt promedio de pos/neg
                 self.Qd[i] = (((abs(Imodel_2pos[i][j]) * self.time_diff) / reduced_speeds[j] + (abs(Imodel_2neg[i][j]) * self.time_diff) / reduced_speeds[j]) / 2)  # Carga Difusiva Q=sum(i) dt promedio de pos/neg
-
                 self.barrasV[i] = ([self.Qc[i] - (DLC / div_win), self.Qd[i], DLC / div_win])
             
+            self.Qd_results.append(self.Qd)
             self.barrasV_results.append(self.barrasV)
+
             self.Qct[j] = ((np.sum(np.abs(Imodel_1pos[:, j])) * self.time_diff) / reduced_speeds[j] +
                     (np.sum(np.abs(Imodel_1neg[:, j])) * self.time_diff) / reduced_speeds[j]) / 2
 
@@ -233,8 +306,15 @@ class Diffusive_Capacitive_Charges():
 
             self.bars.append([self.Qct[j] - DLC, self.Qdt[j], DLC])
 
+        #Corregir valores
+        for num in range(len(speeds)):
+            self.barrasV_results[num][:, 0] = correct_values_bars(self.barrasV_results[num][:, 0])
+            self.barrasV_results[num][:, 1] = correct_values_bars(self.barrasV_results[num][:, 1])
+            self.barrasV_results[num][:, 2] = correct_values_bars(self.barrasV_results[num][:, 2])
+        
+        for j in range(len(speeds)):
             # PERCENTAGE
-            self.percentage_bars.append([(self.Qct[j] - DLC) * 100 / self.Qt[j], self.Qdt[j] * 100 / self.Qt[j], DLC * 100 / self.Qt[j]])
+            self.percentage_bars.append([(self.bars[j][0]) * 100 / self.Qt[j], (self.bars[j][1]) * 100 / self.Qt[j], (self.bars[j][2]) * 100 / self.Qt[j]])
 
 diffusive_capacitive_charges_instance = Diffusive_Capacitive_Charges()
 
@@ -259,28 +339,73 @@ class Masogram():
         self.mass_elec = mass_elec
         self.time_diff = diffusive_capacitive_charges_instance.time_diff
         self.U = normalizacion_instance.U
-        for i in range(div_win):
-            self.Qdpos += abs((Imodel_2pos[i][-1]*self.time_diff)/reduced_speeds[-1]) # A/g*s (C)
-            self.Qdneg -= (Imodel_2neg[i][-1]*self.time_diff)/reduced_speeds[-1] #A/g*s (C)
-            self.masspos[i] = self.Mmol * self.Qdpos * self.mass_elec / (self.elec * 96500)
-            self.massneg[i] = self.Mmol * self.Qdneg * self.mass_elec / (self.elec * 96500)
+
+        self.masspos_results = []
+        self.massneg_results = []
+
+        for index, speed in enumerate(reduced_speeds):
+            self.Qdpos = 0
+            self.Qdneg = 0
+            self.masspos = np.empty(100)
+            self.massneg = np.empty(100)
+            for i in range(div_win):
+                self.Qdpos += abs((Imodel_2pos[i][index]*self.time_diff)/speed) # A/g*s (C)
+                self.Qdneg -= (Imodel_2neg[i][index]*self.time_diff)/speed #A/g*s (C)
+                self.masspos[i] = self.Mmol * self.Qdpos * self.mass_elec / (self.elec * 96500)
+                self.massneg[i] = self.Mmol * self.Qdneg * self.mass_elec / (self.elec * 96500)
+            self.masspos_results.append(self.masspos)
+            self.massneg_results.append(self.massneg)
+        
         self.UExp = UExp
         self.IExp = IExp
 
-class Insertogram():
+class InsertogramMassVersion():
     def __init__(self):
         #self.Qdpos = 0
         #self.Qdneg = 0
-        self.Qd = diffusive_capacitive_charges_instance.Qd
-        self.inser = np.empty(100)
         self.mol_weight = mol_weight
         self.electrons = electrons
         self.density = density
-        self.cteact= self.mol_weight/(electrons*96500*density)
+        self.cteact = self.mol_weight / (electrons * 96500 * density)
         self.U = normalizacion_instance.U
         self.surface_area = surface_area
-        for i in range(div_win):
-            self.inser[i] = self.cteact * ((self.Qd[i]/self.surface_area)/10000)
+        self.div_win = div_win
+
+        self.inser_results = []
+
+        # Initialize the inser array with the correct shape
+        self.inser = np.empty(100)
+
+        for j in range(len(speeds)):
+            value = diffusive_capacitive_charges_instance.Qd_results[j][:]
+            for i in range(div_win):
+                self.inser[i] = (self.cteact * ((value[i]/self.surface_area)/10000)) * 1e7
+            new = correct_values(self.U, self.inser)
+            self.inser_results.append(new)
+
+class InsertogramAreaVersion():
+    def __init__(self):
+        #self.Qdpos = 0
+        #self.Qdneg = 0
+        self.mol_weight = mol_weight
+        self.electrons = electrons
+        self.density = density
+        self.cteact = self.mol_weight / (electrons * 96500 * density)
+        self.U = normalizacion_instance.U
+        self.surface_area = surface_area
+        self.div_win = div_win
+
+        self.inser_results = []
+
+        # Initialize the inser array with the correct shape
+        self.inser = np.empty(100)
+
+        for j in range(len(speeds)):
+            value = diffusive_capacitive_charges_instance.Qd_results[j][:]
+            for i in range(div_win):
+                self.inser[i] = self.cteact * ((value[i]/self.surface_area)/10000) * 1e7
+            new = correct_values(self.U, self.inser)
+            self.inser_results.append(new)
 
 # ~~~~~~~ CARGA POSITIVA ~~~~~~~
 
@@ -292,7 +417,7 @@ class Diffusive_Capacitive_Positive_Charge():
         self.time_diff = self.Win / div_win
 
         self.Qc = np.empty(100)
-        self.Qd = np.empty(100)
+        #self.Qd = np.empty(100)
         self.Qct = np.empty(5)
         self.Qdt = np.empty(5)
         self.Qtot = np.empty(5)
@@ -303,9 +428,11 @@ class Diffusive_Capacitive_Positive_Charge():
 
         self.x_positions = np.arange(len(self.U))
         self.barrasV_results = []
+        self.Qd_results = []
 
         for j in range(len(speeds)):
 
+            self.Qd = np.empty(100)
             self.barrasV = np.empty((100, 3))
 
             for i in range(len(self.U)):
@@ -314,7 +441,9 @@ class Diffusive_Capacitive_Positive_Charge():
 
                 self.barrasV[i] = ([self.Qc[i] - (DLC / div_win), self.Qd[i], DLC / div_win])
             
+            self.Qd_results.append(self.Qd)
             self.barrasV_results.append(self.barrasV)
+
             self.Qct[j] = (np.sum(np.abs(Imodel_1pos[:, j]) * self.time_diff) / reduced_speeds[j])
 
             self.Qdt[j] = ((np.sum(np.abs(Imodel_2pos[:, j])) * self.time_diff) / reduced_speeds[j])
@@ -330,8 +459,17 @@ class Diffusive_Capacitive_Positive_Charge():
 
             self.bars.append([self.Qct[j] - DLC, self.Qdt[j], DLC])
 
+        #Corregir valores
+        for num in range(len(speeds)):
+            self.barrasV_results[num][:, 0] = correct_values_bars(self.barrasV_results[num][:, 0])
+            self.barrasV_results[num][:, 1] = correct_values_bars(self.barrasV_results[num][:, 1])
+            self.barrasV_results[num][:, 2] = correct_values_bars(self.barrasV_results[num][:, 2])
+            sums = np.sum(self.barrasV_results[num], axis=0)  # Suma de cada columna
+            self.bars[num] = (sums[0], sums[1], sums[2])
+        
+        for j in range(len(speeds)):
             # PERCENTAGE
-            self.percentage_bars.append([(self.Qct[j] - DLC) * 100 / self.Qt[j], self.Qdt[j] * 100 / self.Qt[j], DLC * 100 / self.Qt[j]])
+            self.percentage_bars.append([(self.bars[j][0]) * 100 / self.Qt[j], (self.bars[j][1]) * 100 / self.Qt[j], (self.bars[j][2]) * 100 / self.Qt[j]])
 
 diffusive_capacitive_positive_charge_instance = Diffusive_Capacitive_Positive_Charge()
 
@@ -345,6 +483,30 @@ class PercentageofSpecificChargePos():
     def __init__(self):
         self.percentage_bars_transposed = np.array(diffusive_capacitive_positive_charge_instance.percentage_bars).T
 
+class InsertogramMassVersionChargePos():
+    def __init__(self):
+        #self.Qdpos = 0
+        #self.Qdneg = 0
+        self.mol_weight = mol_weight
+        self.electrons = electrons
+        self.density = density
+        self.cteact = self.mol_weight / (electrons * 96500 * density)
+        self.U = normalizacion_instance.U
+        self.surface_area = surface_area
+        self.div_win = div_win
+
+        self.inser_results = []
+
+        # Initialize the inser array with the correct shape
+        self.inser = np.empty(100)
+
+        for j in range(len(speeds)):
+            value = diffusive_capacitive_positive_charge_instance.Qd_results[j][:]
+            for i in range(div_win):
+                self.inser[i] = (self.cteact * ((value[i]/self.surface_area)/10000)) * 1e7
+            new = correct_values(self.U, self.inser)
+            self.inser_results.append(new)
+
 # ~~~~~~~ CARGA NEGATIVA ~~~~~~~
 
 class Diffusive_Capacitive_Negative_Charge():
@@ -355,7 +517,7 @@ class Diffusive_Capacitive_Negative_Charge():
         self.time_diff = self.Win / div_win
 
         self.Qc = np.empty(100)
-        self.Qd = np.empty(100)
+        #self.Qd = np.empty(100)
         self.Qct = np.empty(5)
         self.Qdt = np.empty(5)
         self.Qtot = np.empty(5)
@@ -366,9 +528,11 @@ class Diffusive_Capacitive_Negative_Charge():
 
         self.x_positions = np.arange(len(self.U))
         self.barrasV_results = []
+        self.Qd_results = []
 
         for j in range(len(speeds)):
 
+            self.Qd = np.empty(100)
             self.barrasV = np.empty((100, 3))
 
             for i in range(len(self.U)):
@@ -378,6 +542,8 @@ class Diffusive_Capacitive_Negative_Charge():
                 self.barrasV[i] = ([self.Qc[i] - (DLC / div_win), self.Qd[i], DLC / div_win])
             
             self.barrasV_results.append(self.barrasV)
+            self.Qd_results.append(self.Qd)
+
             self.Qct[j] = (np.sum(np.abs(Imodel_1neg[:, j]) * self.time_diff) / reduced_speeds[j])
 
             self.Qdt[j] = ((np.sum(np.abs(Imodel_2neg[:, j])) * self.time_diff) / reduced_speeds[j])
@@ -392,9 +558,16 @@ class Diffusive_Capacitive_Negative_Charge():
             print(f"Qt {reduced_speeds[j] * 1000} mV/s = {self.Qt[j] / 3.6} mA.h/g ó {self.Qt[j]} C/g")
 
             self.bars.append([self.Qct[j] - DLC, self.Qdt[j], DLC])
-
+        
+        #Corregir valores
+        for num in range(len(speeds)):
+            self.barrasV_results[num][:, 0] = correct_values_bars(self.barrasV_results[num][:, 0])
+            self.barrasV_results[num][:, 1] = correct_values_bars(self.barrasV_results[num][:, 1])
+            self.barrasV_results[num][:, 2] = correct_values_bars(self.barrasV_results[num][:, 2])
+        
+        for j in range(len(speeds)):
             # PERCENTAGE
-            self.percentage_bars.append([(self.Qct[j] - DLC) * 100 / self.Qt[j], self.Qdt[j] * 100 / self.Qt[j], DLC * 100 / self.Qt[j]])
+            self.percentage_bars.append([(self.bars[j][0]) * 100 / self.Qt[j], (self.bars[j][1]) * 100 / self.Qt[j], (self.bars[j][2]) * 100 / self.Qt[j]])
 
 diffusive_capacitive_negative_charge_instance = Diffusive_Capacitive_Negative_Charge()
 
@@ -407,3 +580,27 @@ class SpecificChargeVSSweepSpeedNeg():
 class PercentageofSpecificChargeNeg():
     def __init__(self):
         self.percentage_bars_transposed = np.array(diffusive_capacitive_negative_charge_instance.percentage_bars).T
+
+class InsertogramMassVersionChargeNeg():
+    def __init__(self):
+        #self.Qdpos = 0
+        #self.Qdneg = 0
+        self.mol_weight = mol_weight
+        self.electrons = electrons
+        self.density = density
+        self.cteact = self.mol_weight / (electrons * 96500 * density)
+        self.U = normalizacion_instance.U
+        self.surface_area = surface_area
+        self.div_win = div_win
+
+        self.inser_results = []
+
+        # Initialize the inser array with the correct shape
+        self.inser = np.empty(100)
+
+        for j in range(len(speeds)):
+            value = diffusive_capacitive_negative_charge_instance.Qd_results[j][:]
+            for i in range(div_win):
+                self.inser[i] = self.cteact * ((value[i]/self.surface_area)/10000) * 1e7
+            new = correct_values(self.U, self.inser)
+            self.inser_results.append(new)
