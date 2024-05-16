@@ -13,8 +13,8 @@ class DownloadFiles(tk.Toplevel):
         self.resizable(False, False)
         self.parent = parent
         self.list_of_checkboxes = list()
-        self.checkboxes = ['Interpolation', 'Obtaining of K', 'VOLTAMPEROGRAM',
-            'Total Q', 'Q%', 'MASOGRAMA', 'ACTIVE THICKNESS']
+        self.checkboxes = ['Interpolation', 'K₁ y K₂', 'VOLTAMPEROGRAM',
+            'Total Q', 'Q%', 'MASSOGRAM', 'ACTIVE THICKNESS']
         self.list_of_checks = list()
         self.path = ''
 

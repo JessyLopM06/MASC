@@ -20,7 +20,7 @@ active_mass = tk.Entry(root,width=20, font=('Arial',12),highlightbackground='blu
 active_mass.grid(row=0, column=1, pady=8, padx=10, sticky='w')
 
 #density
-density = tk.Label(root, text='Active material desnity (g cm³):', bg='#003399',
+density = tk.Label(root, text='Active material density (g cm³):', bg='#003399',
     font=('Arial',12,'bold'), fg='white',width=40)
 density.grid(row=1,column=0,pady=5,padx=10, sticky='w')
 
@@ -29,7 +29,7 @@ density = tk.Entry(root,width=20, font=('Arial',12),highlightbackground='blue4',
 density.grid(row=1, column=1, pady=8, padx=10, sticky='w')
 
 #Mass of active material 
-mass_elec = tk.Label(root, text='Molecular Mass of active (g mol⁻¹):',
+mass_elec = tk.Label(root, text='Molar mass of active material (gmol⁻¹)',
     bg='#003399', font=('Arial',12,'bold'), fg='white',width=40)
 mass_elec.grid(row=2,column=0,pady=8,padx=10, sticky='w')
 
@@ -73,7 +73,7 @@ REFERENCE_ELECTRODE = tk.Entry(root,width=20, font=('Arial',12),
 REFERENCE_ELECTRODE.grid(row=6, column=1, pady=8, padx=10, sticky='w')
 
 #Molar mass of active ion (g/mol ⁻¹)
-Mmol = tk.Label(root, text='Molar mass of active ion (g/mol ⁻¹):', bg='#003399',
+Mmol = tk.Label(root, text='Molar mass of active ion (gmol⁻¹):', bg='#003399',
     font=('Arial',12,'bold'), fg='white',width=40)
 Mmol.grid(row=7,column=0,pady=5,padx=10, sticky='w')
 
@@ -90,14 +90,6 @@ mass_elec = tk.Entry(root,width=20, font=('Arial',12),highlightbackground='blue4
     highlightthickness=3)
 mass_elec.grid(row=8, column=1, pady=8, padx=10, sticky='w')
 
-# Molar mass of active material (g/mol)
-mol_weight= tk.Label(root, text='Molar mass of active material (g/mol):',
-    bg='#003399', font=('Arial',12,'bold'), fg='white',width=40)
-mol_weight.grid(row=9,column=0,pady=5,padx=10, sticky='w')
-
-mol_weight = tk.Entry(root,width=20, font=('Arial',12),highlightbackground='blue4',
-    highlightthickness=3)
-mol_weight.grid(row=9, column=1, pady=8, padx=10, sticky='w')
 
 # Función para manejar la acción de clic en el botón "Aceptar"
 def aceptar():
@@ -106,7 +98,7 @@ def aceptar():
 ## Botón "Aceptar"
 boton_aceptar = tk.Button(root, text="✔Aceptar", command=aceptar, bg="blue4",
     fg="white", font=("Arial", 12,'bold'),activeforeground='#1414b8')
-boton_aceptar.place(relx=0.5, rely=0.95, anchor='center')
+boton_aceptar.place(relx=0.5, rely=0.90, anchor='center')
 
 root.mainloop()
 

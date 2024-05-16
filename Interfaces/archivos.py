@@ -28,7 +28,7 @@ def agregar_velocidad(velocities, velocidades, listbox):
 
 def agregar_conjunto(row_num, archivos_seleccionados, velocidades, listbox):
     row_num += 1
-    Label(text=f'Sweep Speeds {row_num} m v⁻¹', bg='#003399', font=('Arial', 12, 'bold')
+    Label(text=f'Scan rate {row_num} mVs⁻¹', bg='#003399', font=('Arial', 12, 'bold')
         ,fg='white', width=20).grid(column=0, row=row_num, pady=15, padx=10)
     Entry(width=10, font=('Arial', 12),highlightbackground="blue4",
         highlightthickness=3).grid(column=1, row=row_num)
@@ -65,7 +65,7 @@ file_paths = []
 veloc = []
 
 #Introduce las velocidades de barrido
-Label(text='Sweep Speeds m v⁻¹', bg='#003399', font=('Arial', 12, 'bold'), fg='white',
+Label(text='Scan rate mVs⁻¹', bg='#003399', font=('Arial', 12, 'bold'), fg='white',
     width=20).grid(column=0, row=0, pady=15, padx=10)
 velocities = Entry(width=10, font=('Arial', 12), highlightbackground="blue4",
                 highlightthickness=3)
