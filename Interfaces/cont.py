@@ -146,29 +146,29 @@ root.mainloop()
 
 
 
-import tkinter as tk
-from customtkinter import CTk, CTkTabview
+# import tkinter as tk
+# from customtkinter import CTk, CTkTabview
 
-class TabViewWithColoredMargin:
-    def __init__(self, root) -> None:
-        self.root = root
+# class TabViewWithColoredMargin:
+#     def __init__(self, root) -> None:
+#         self.root = root
 
-        # Creamos un Frame adicional para el margen con color personalizado
-        self.margin_frame = tk.Frame(root, padx=10, pady=10, bg='#003399')  # Cambia 'blue' por el color que desees
-        self.margin_frame.pack()
+#         # Creamos un Frame adicional para el margen con color personalizado
+#         self.margin_frame = tk.Frame(root, padx=10, pady=10, bg='#003399')  # Cambia 'blue' por el color que desees
+#         self.margin_frame.pack()
 
-        # Creamos el TabView dentro del Frame con margen
-        self.tabview = CTkTabview(self.margin_frame, fg_color='silver')
-        self.tabview.pack()
+#         # Creamos el TabView dentro del Frame con margen
+#         self.tabview = CTkTabview(self.margin_frame, fg_color='silver')
+#         self.tabview.pack()
 
-        # Agregamos las pestañas al TabView
-        for tab_name in ['Interpolation', 'Obtaining of K', 'VOLTAMPEROGRAM', 'Total Q', 'Q%', 'MASOGRAMA', 'ACTIVE THICKNESS', 'Barras 2']:
-            self.tabview.add(tab_name)
+#         # Agregamos las pestañas al TabView
+#         for tab_name in ['Interpolation', 'Obtaining of K', 'VOLTAMPEROGRAM', 'Total Q', 'Q%', 'MASOGRAMA', 'ACTIVE THICKNESS', 'Barras 2']:
+#             self.tabview.add(tab_name)
 
-# Creamos la aplicación principal
-root = CTk()
-geometry(root,'1000x1000')
-app = TabViewWithColoredMargin(root)
+# # Creamos la aplicación principal
+# root = CTk()
+# geometry(root,'1000x1000')
+# app = TabViewWithColoredMargin(root)
 
-# Ejecutamos el bucle de eventos
-root.mainloop()
+# # Ejecutamos el bucle de eventos
+# root.mainloop()

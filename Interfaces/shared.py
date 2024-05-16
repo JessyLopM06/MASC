@@ -23,12 +23,14 @@ name = '_'
 MASS_UG = 'mass (mg)'                         # * m de micrometro 
 
 active_mass = 1                               # USER (Mass of active material / Geometry Surface Area)   YA
+mass_elec = 0.00112  # Massogram  # g         # USER (Mass of active material (g))
+
+
 speeds = np.array([5, 10, 25, 50, 100])       # USER (archivos)
 reduced_speeds = speeds * 0.001               # CALCULADA
 div_win = 100                                 # USER (Potential steps)                                   YA
 DLC = 7.3  # C/g                              # USER (Double layer capacitance)                          YA
 Mmol = 39  # g/mol                            # USER (Molar mass of active ion (g/mol))
-mass_elec = 0.00112  # Massogram  # g         # USER (Mass of active material (g))
 mol_weight = 197.94247  # g/mol               # USER (Molar mass of active material (g/mol))
 density = 2.3  # g/cm3                        # USER (Active material density)
 electrons = 1                                 # USER (Number of electrons)

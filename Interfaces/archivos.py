@@ -3,6 +3,7 @@ Este módulo proporciona una interfaz de los Archivos de usuario utilizando tkin
 """
 from tkinter import Tk, Label, Button, Entry, END, filedialog, Scrollbar, Listbox
 import subprocess
+import pandas as pd
 
 def select_file(archivos_seleccionados, vel, listbox):
     filepath = filedialog.askopenfilename()
@@ -23,7 +24,7 @@ def agregar_velocidad(velocities, velocidades, listbox):
     if velocidad:
         velocidades.append(velocidad)
         velocities.delete(0, END)
-        actualizar_texto(arch_seleccionados, velocidades, listbox)
+        actualizar_texto(file_paths, velocidades, listbox)
 
 def agregar_conjunto(row_num, archivos_seleccionados, velocidades, listbox):
     row_num += 1
@@ -50,9 +51,9 @@ def actualizar_texto(archivos_seleccionados, velocidades, listbox):
 def cerrar_ventana(root):
     root.destroy()
 def mostrar_masa():
-    subprocess.run(["python", "Interfaces/masa.py"], shell=True)
+    subprocess.run(["python", "Interfaces/get_mass_variables.py"], shell=True)
 def mostrar_area():
-    subprocess.run(["python", "Interfaces/area_activa.py"], shell=True)
+    subprocess.run(["python", "Interfaces/get_area_variables.py"], shell=True)
 ventana = Tk()
 ventana.config(bg='gray84')
 ventana.geometry('700x800')
@@ -60,7 +61,7 @@ ventana.resizable(0, 0)
 ventana.title('Settings')
 
 # Definición de la lista archivos_seleccionados
-arch_seleccionados = []
+file_paths = []
 veloc = []
 
 #Introduce las velocidades de barrido
@@ -72,11 +73,11 @@ velocities.grid(column=1, row=0)
 
 #Button Select File
 Button(width=10, font=('Arial', 12, 'bold'), fg='white', text='📁Select File',
-    bg='blue4', bd=5, command=lambda: select_file(arch_seleccionados,
+    bg='blue4', bd=5, command=lambda: select_file(file_paths,
                         veloc, lista)).grid(column=2, row=0, pady=10, padx=20)
 #Button Delete
 Button(width=10, font=('Arial', 12, 'bold'), fg='white', text='❌Delete', bg='blue4',
-    bd=5, command=lambda: delete_file(arch_seleccionados,
+    bd=5, command=lambda: delete_file(file_paths,
                     veloc, row_numero, lista)).grid(column=3, row=0, pady=10, padx=20)
 #Button Add
 Button(width=10, font=('Arial', 12, 'bold'), fg='white', text='➕Add', bg='blue4',
@@ -109,4 +110,3 @@ scrollbar.config(command=lista.yview)
 row_numero = 1
 
 ventana.mainloop()
-#

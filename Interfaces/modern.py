@@ -494,21 +494,21 @@ Grises="#C0C0C0"
    
 
 
-class TabViewWithColoredMargin:
-    def __init__(self, root) -> None:
-        self.root = root
+# class TabViewWithColoredMargin:
+#     def __init__(self, root) -> None:
+#         self.root = root
 
-        # Creamos un Frame adicional para el margen con color personalizado
-        self.margin_frame = tk.Frame(root, padx=10, pady=10, bg='#116c2c',width=1000,height=1000)  # Cambia 'verde' por el color que desees
-        self.margin_frame.pack(fill=tk.BOTH)
+#         # Creamos un Frame adicional para el margen con color personalizado
+#         self.margin_frame = tk.Frame(root, padx=10, pady=10, bg='#116c2c',width=1000,height=1000)  # Cambia 'verde' por el color que desees
+#         self.margin_frame.pack(fill=tk.BOTH)
 
-        # Creamos el TabView dentro del Frame con margen
-        self.tabview = CTkTabview(self.margin_frame, fg_color='#abbbb0',width=1070,height=470)#ancho x largo 840 x 320
-        self.tabview.pack(side='right',fill=tk.BOTH)
+#         # Creamos el TabView dentro del Frame con margen
+#         self.tabview = CTkTabview(self.margin_frame, fg_color='#abbbb0',width=1070,height=470)#ancho x largo 840 x 320
+#         self.tabview.pack(side='right',fill=tk.BOTH)
 
-        # Agregamos las pestañas al TabView
-        for tab_name  in ['Interpolation', 'Obtaining of K', 'VOLTAMPEROGRAM', 'Total Q', 'Q%', 'MASOGRAMA', 'ACTIVE THICKNESS', 'Barras 2']:
-            self.tabview.add(tab_name)
+#         # Agregamos las pestañas al TabView
+#         for tab_name  in ['Interpolation', 'Obtaining of K', 'VOLTAMPEROGRAM', 'Total Q', 'Q%', 'MASOGRAMA', 'ACTIVE THICKNESS', 'Barras 2']:
+#             self.tabview.add(tab_name)
 
 
 
@@ -543,23 +543,9 @@ def ejecutar_settings():
 
     subprocess.Popen(["python", "Interfaces/archivos.py"])
 
-
-def funcion_del_boton_Masa():
-    subprocess.run(["python", "Masa.py"])
-
-
-def funcion_del_boton_Area():
-    subprocess.run(["python", "Area_activa.py"]) 
-
-def ejecutar_velocities():
-    #Ejecutar el script usuario_M.py
-    subprocess.Popen(['python',"Avancess/usuario_M.py"])
-
-
 root = tk.Tk()
 root.geometry('1000x1000')#Ancho x Largo
 #root.resizable(0, 0)
-
 
 # Crear un frame principal
 main_frame = ttk.Frame(root)
@@ -709,7 +695,422 @@ def modelo1_page():
     frame1 = Frame(inner_frame, bg='gray84', width=3000, height=3000)
     frame1.grid(column=0, row=0, sticky='nsew')
 
-     #Botones para el inicio del modelo 1 download,setings y continue
+    def ejecutar_graficos():
+        # Agregar el código TabView al frame2
+        app = PestañasVerticales(frame2)
+        app.pack(expand=True, fill='both')
+
+        # Crear pestañas (frames) dentro del notebook principal
+        normalizacion_tab = ttk.Frame(app)
+        oxidation_tab = ttk.Frame(app)
+        reduction_tab = ttk.Frame(app)
+        diffusive_capacitive_currents_tab = ttk.Frame(app)
+        capacitive_current_tab = ttk.Frame(app)
+        diffusive_current_tab = ttk.Frame(app)
+        parameterB_tab = ttk.Frame(app)
+        diffusive_capacitive_charges_tab = ttk.Frame(app)
+        scharge_vs_sspeed_tab = ttk.Frame(app)
+        percentage_scharge_tab = ttk.Frame(app)
+        masogram_tab = ttk.Frame(app)
+        insertogram_mass_ver_tab = ttk.Frame(app)
+        diffusive_capacitive_positive_charge_tab = ttk.Frame(app)
+        scharge_vs_sspeed_pos_tab = ttk.Frame(app)
+        percentage_scharge_pos_tab = ttk.Frame(app)
+        insertogram_mass_ver_pos_tab = ttk.Frame(app)
+        diffusive_capacitive_negative_charge_tab = ttk.Frame(app)
+        scharge_vs_sspeed_neg_tab = ttk.Frame(app)
+        percentage_scharge_neg_tab = ttk.Frame(app)
+        insertogram_mass_ver_neg_tab = ttk.Frame(app)
+
+        app.add(normalizacion_tab, pestañas_superiores[0])
+        app.add(oxidation_tab, pestañas_superiores[1])
+        app.add(reduction_tab, pestañas_superiores[2])
+        app.add(diffusive_capacitive_currents_tab, pestañas_superiores[3])
+        app.add(capacitive_current_tab, pestañas_superiores[4])
+        app.add(diffusive_current_tab, pestañas_superiores[5])
+        app.add(parameterB_tab, pestañas_superiores[6])
+        app.add(diffusive_capacitive_charges_tab, pestañas_superiores[7])
+        app.add(scharge_vs_sspeed_tab, pestañas_superiores[8])
+        app.add(percentage_scharge_tab, pestañas_superiores[9])
+        app.add(masogram_tab, pestañas_superiores[10])
+        app.add(insertogram_mass_ver_tab, pestañas_superiores[11])
+        app.add(diffusive_capacitive_positive_charge_tab, pestañas_superiores[12])
+        app.add(scharge_vs_sspeed_pos_tab, pestañas_superiores[13])
+        app.add(percentage_scharge_pos_tab, pestañas_superiores[14])
+        app.add(insertogram_mass_ver_pos_tab, pestañas_superiores[15])
+        app.add(diffusive_capacitive_negative_charge_tab, pestañas_superiores[16])
+        app.add(scharge_vs_sspeed_neg_tab, pestañas_superiores[17])
+        app.add(percentage_scharge_neg_tab, pestañas_superiores[18])
+        app.add(insertogram_mass_ver_neg_tab, pestañas_superiores[19])
+
+        # Crear notebooks adicionales dentro de cada pestaña para alojar los gráficos específicos
+        normalizacion_notebook = ttk.Notebook(normalizacion_tab)
+        normalizacion_notebook.pack(fill=tk.BOTH, expand=True)
+
+        diffusive_capacitive_currents_notebook = ttk.Notebook(diffusive_capacitive_currents_tab)
+        diffusive_capacitive_currents_notebook.pack(fill=tk.BOTH, expand=True)
+
+        capacitive_current_notebook = ttk.Notebook(capacitive_current_tab)
+        capacitive_current_notebook.pack(fill=tk.BOTH, expand=True)
+
+        diffusive_current_notebook = ttk.Notebook(diffusive_current_tab)
+        diffusive_current_notebook.pack(fill=tk.BOTH, expand=True)
+
+        diffusive_capacitive_charges_notebook = ttk.Notebook(diffusive_capacitive_charges_tab)
+        diffusive_capacitive_charges_notebook.pack(fill=tk.BOTH, expand=True)
+
+        massogram_notebook = ttk.Notebook(masogram_tab)
+        massogram_notebook.pack(fill=tk.BOTH, expand=True)
+
+        insertogram_mass_ver_notebook = ttk.Notebook(insertogram_mass_ver_tab)
+        insertogram_mass_ver_notebook.pack(fill=tk.BOTH, expand=True)
+
+        diffusive_capacitive_positive_charge_notebook = ttk.Notebook(diffusive_capacitive_positive_charge_tab)
+        diffusive_capacitive_positive_charge_notebook.pack(fill=tk.BOTH, expand=True)
+
+        insertogram_mass_ver_pos_notebook = ttk.Notebook(insertogram_mass_ver_pos_tab)
+        insertogram_mass_ver_pos_notebook.pack(fill=tk.BOTH, expand=True)
+
+        diffusive_capacitive_negative_charge_notebook = ttk.Notebook(diffusive_capacitive_negative_charge_tab)
+        diffusive_capacitive_negative_charge_notebook.pack(fill=tk.BOTH, expand=True)
+
+        insertogram_mass_ver_neg_notebook = ttk.Notebook(insertogram_mass_ver_neg_tab)
+        insertogram_mass_ver_neg_notebook.pack(fill=tk.BOTH, expand=True)
+
+        # Crear nombres de pestañas: Velocidades.
+        global normalization_names_list # Arreglo para almacenar los nombres generados
+        global normalization_names_dict # Diccionario para almacenar los datos
+        global diffusive_capacitive_currents_names_list
+        global diffusive_capacitive_currents_names_dict
+        global capacitive_current_names_list
+        global capacitive_current_names_dict
+        global diffusive_current_names_list
+        global diffusive_current_names_dict
+        global diffusive_capacitive_charges_names_list
+        global diffusive_capacitive_charges_names_dict
+        global massogram_names_list
+        global massogram_names_dict
+        global insertogram_mass_names_list
+        global insertogram_mass_names_dict
+        global diffusive_capacitive_positive_charge_names_list
+        global diffusive_capacitive_positive_charge_names_dict
+        global insertogram_mass_pos_names_list
+        global insertogram_mass_pos_names_dict
+        global diffusive_capacitive_negative_charge_names_list
+        global diffusive_capacitive_negative_charge_names_dict
+        global insertogram_mass_neg_names_list
+        global insertogram_mass_neg_names_dict
+
+        for num, speed in enumerate(speeds):
+            # Generar nombres y agregar al arreglo
+            normalization_name = f"{speed} mV/s - {pestañas_superiores[0]}"
+            normalization_names_list.append(normalization_name)
+            diffusive_capacitive_currents_name = f"{speed} mV/s - {pestañas_superiores[3]}"
+            diffusive_capacitive_currents_names_list.append(diffusive_capacitive_currents_name)
+            capacitive_current_name = f"{speed} mV/s - {pestañas_superiores[4]}"
+            capacitive_current_names_list.append(capacitive_current_name)
+            diffusive_current_name = f"{speed} mV/s - {pestañas_superiores[5]}"
+            diffusive_current_names_list.append(diffusive_current_name)
+            diffusive_capacitive_charges_name = f"{speed} mV/s - {pestañas_superiores[7]}"
+            diffusive_capacitive_charges_names_list.append(diffusive_capacitive_charges_name)
+            massogram_name = f"{speed} mV/s - {pestañas_superiores[10]}"
+            massogram_names_list.append(massogram_name)
+            insertogram_mass_name = f"{speed} mV/s - {pestañas_superiores[11]}"
+            insertogram_mass_names_list.append(insertogram_mass_name)
+            diffusive_capacitive_positive_charge_name = f"{speed} mV/s - {pestañas_superiores[12]}"
+            diffusive_capacitive_positive_charge_names_list.append(diffusive_capacitive_positive_charge_name)
+            insertogram_mass_pos_name = f"{speed} mV/s - {pestañas_superiores[15]}"
+            insertogram_mass_pos_names_list.append(insertogram_mass_pos_name)
+            diffusive_capacitive_negative_charge_name = f"{speed} mV/s - {pestañas_superiores[16]}"
+            diffusive_capacitive_negative_charge_names_list.append(diffusive_capacitive_negative_charge_name)
+            insertogram_mass_neg_name = f"{speed} mV/s - {pestañas_superiores[19]}"
+            insertogram_mass_neg_names_list.append(insertogram_mass_neg_name)
+            
+            # Para 'normalization'
+            normalization_names_dict[normalization_name] = {
+                'speed': speed,
+                'data': (normalizacion_values.UExp_results[num], normalizacion_values.IExp_results[num]),
+                'fmt': 'o b', 'label': f'{int(speeds[num])} mV/s',
+                'title': 'Normalization', 'x_major_formatter': mticker.FormatStrFormatter('%.2f'),
+                'x_major_locator': mticker.MaxNLocator(5), 'x_minor_locator': AutoMinorLocator(3),
+                'y_major_formatter': mticker.FormatStrFormatter('%.2f'), 'y_major_locator': mticker.MaxNLocator(7),
+                'y_minor_locator': AutoMinorLocator(5),
+                'x_label': REFERENCE_ELECTRODE,
+                'y_label': DENSIDAD_DE_CORRIENTE
+            }
+            # Para 'Diffusive & Capacitive Currents'
+            diffusive_capacitive_currents_names_dict[diffusive_capacitive_currents_name] = {
+                'speed': speed,
+                'data1': (diffusive_capacitive_currents_values.UExp_results[num], diffusive_capacitive_currents_values.IExp_results[num]),
+                'fmt1': 'o b', 
+                'markersize1': 2,
+                'data2': (diffusive_capacitive_currents_values.U, diffusive_capacitive_currents_values.Imodelpos[:, num]),
+                'fmt2': 'o r', 
+                'markersize2': 2,
+                'data3': (diffusive_capacitive_currents_values.U, diffusive_capacitive_currents_values.Imodelneg[:, num]),
+                'fmt3': 'o r', 
+                'markersize3': 2,
+                'title': f'{pestañas_superiores[4]} - {speeds[num]}mV/s',
+                'x_major_formatter': mticker.FormatStrFormatter('%.1f'),
+                'x_major_locator': mticker.MaxNLocator(5), 'x_minor_locator': AutoMinorLocator(3),
+                'x_label': REFERENCE_ELECTRODE,
+                'y_label': DENSIDAD_DE_CORRIENTE,
+                'legend': ['Experimental', 'Theoretical']
+            }
+            # Para 'Capacitive Currents'
+            capacitive_current_names_dict[capacitive_current_name] = {
+                'speed': speed,
+                'data1': (capacitive_current_values.UExp_results[num], capacitive_current_values.IExp_results[num]),
+                'fmt1': 'o b', 
+                'markersize1': 2,
+                'data2': (capacitive_current_values.U, capacitive_current_values.Imodel_1pos[:, num]),
+                'fmt2': 'o r', 
+                'markersize2': 2,
+                'data3': (capacitive_current_values.U, capacitive_current_values.Imodel_1neg[:, num]),
+                'fmt3': 'o r', 
+                'markersize3': 2,
+                'title': f'{pestañas_superiores[5]} - {speeds[num]}mV/s',
+                'x_major_formatter': mticker.FormatStrFormatter('%.1f'),
+                'x_major_locator': mticker.MaxNLocator(5), 'x_minor_locator': AutoMinorLocator(3),
+                'x_label': REFERENCE_ELECTRODE,
+                'y_label': DENSIDAD_DE_CORRIENTE,
+                'legend': ['Experimental', 'Theoretical']
+            }
+            # Para 'Diffusive Currents'
+            diffusive_current_names_dict[diffusive_current_name] = {
+                'speed': speed,
+                'data1': (diffusive_current_values.UExp_results[num], diffusive_current_values.IExp_results[num]),
+                'fmt1': 'o b', 
+                'markersize1': 2,
+                'data2': (diffusive_current_values.U, diffusive_current_values.Imodel_2pos[:, num]),
+                'fmt2': 'o r', 
+                'markersize2': 2,
+                'data3': (diffusive_current_values.U, diffusive_current_values.Imodel_2neg[:, num]),
+                'fmt3': 'o r', 
+                'markersize3': 2,
+                'title': f'{pestañas_superiores[5]} - {speeds[num]}mV/s',
+                'x_major_formatter': mticker.FormatStrFormatter('%.1f'),
+                'x_major_locator': mticker.MaxNLocator(5), 'x_minor_locator': AutoMinorLocator(3),
+                'x_label': REFERENCE_ELECTRODE,
+                'y_label': DENSIDAD_DE_CORRIENTE,
+                'legend': ['Experimental', 'Theoretical']
+            }
+            # Para 'Capacitive & Diffusive Charges'
+            diffusive_capacitive_charges_names_dict[diffusive_capacitive_charges_name] = {
+                'speed': speed,
+                'data1': (diffusive_capacitive_charges_values.x_positions, diffusive_capacitive_charges_values.barrasV_results[num][:, 0]),
+                'bottom1': np.zeros(len(diffusive_capacitive_charges_values.x_positions)),
+                'label1': 'Pseudocapacitive',
+                'data2': (diffusive_capacitive_charges_values.x_positions, diffusive_capacitive_charges_values.barrasV_results[num][:, 1]),
+                'fmt2': 'o r', 
+                'bottom2': diffusive_capacitive_charges_values.barrasV_results[num][:, 0],
+                'label2': 'Diffusive',
+                'data3': (diffusive_capacitive_charges_values.x_positions, diffusive_capacitive_charges_values.barrasV_results[num][:, 2]),
+                'fmt3': 'o r', 
+                'bottom3': diffusive_capacitive_charges_values.barrasV_results[num][:, 0] + diffusive_capacitive_charges_values.barrasV_results[num][:, 1],
+                'label3': 'Double Layer',
+                'title': f'{speeds[num]} mV/s',
+                #'title': f'{pestañas_superiores[11]} - {speeds[num]} mV/s',
+                'set_xticks': diffusive_capacitive_charges_values.x_positions,
+                'set_xticklabels': ['{:.2f}'.format(val) for val in diffusive_capacitive_charges_values.U],
+                'locator_params_axis': 'x',
+                'nbins': 10,
+                'x_label': REFERENCE_ELECTRODE,
+                'y_label': 'Specific Charge (C/g)',
+            }
+            massogram_names_dict[massogram_name] = {
+                'speed': speed,
+                'data_x_blue': masogram_values.U,
+                'data_y_blue_1': masogram_values.masspos_results[num],
+                'data_y_blue_2': masogram_values.massneg_results[num],
+                'data_x_red': masogram_values.UExp,
+                'data_y_red': masogram_values.IExp,
+                'title': f'{speeds[num]} mV/s'
+            }
+            insertogram_mass_names_dict[insertogram_mass_name] = {
+                'speed': speed,
+                'data_x': insertogram_mass_values.U,
+                'data_y': insertogram_mass_values.inser_results[num],
+                'x_label': REFERENCE_ELECTRODE,
+                'y_label': 'Active Thickness (nm)',
+                'title': f'{speeds[num]} mV/s'
+            }
+            # Para 'Capacitive & Diffusive Positive Charge'
+            diffusive_capacitive_positive_charge_names_dict[diffusive_capacitive_positive_charge_name] = {
+                'speed': speed,
+                'data1': (diffusive_capacitive_positive_charge_values.x_positions, diffusive_capacitive_positive_charge_values.barrasV_results[num][:, 0]),
+                'bottom1': np.zeros(len(diffusive_capacitive_positive_charge_values.x_positions)),
+                'label1': 'Pseudocapacitive',
+                'data2': (diffusive_capacitive_positive_charge_values.x_positions, diffusive_capacitive_positive_charge_values.barrasV_results[num][:, 1]),
+                'fmt2': 'o r', 
+                'bottom2': diffusive_capacitive_positive_charge_values.barrasV_results[num][:, 0],
+                'label2': 'Diffusive',
+                'data3': (diffusive_capacitive_positive_charge_values.x_positions, diffusive_capacitive_positive_charge_values.barrasV_results[num][:, 2]),
+                'fmt3': 'o r', 
+                'bottom3': diffusive_capacitive_positive_charge_values.barrasV_results[num][:, 0] + diffusive_capacitive_positive_charge_values.barrasV_results[num][:, 1],
+                'label3': 'Double Layer',
+                'title': f'{speeds[num]} mV/s',
+                #'title': f'{pestañas_superiores[12]} - {speeds[num]} mV/s',
+                'set_xticks': diffusive_capacitive_positive_charge_values.x_positions,
+                'set_xticklabels': ['{:.2f}'.format(val) for val in diffusive_capacitive_positive_charge_values.U],
+                'locator_params_axis': 'x',
+                'nbins': 10,
+                'x_label': REFERENCE_ELECTRODE,
+                'y_label': 'Specific Charge (C/g)',
+            }
+            insertogram_mass_pos_names_dict[insertogram_mass_pos_name] = {
+                'speed': speed,
+                'data_x': insertogram_mass_version_charge_pos_values.U,
+                'data_y': insertogram_mass_version_charge_pos_values.inser_results[num],
+                'x_label': REFERENCE_ELECTRODE,
+                'y_label': 'Active Thickness (nm)',
+                'title': f'{speeds[num]} mV/s'
+            }
+            # Para 'Capacitive & Diffusive Negative Charge'
+            diffusive_capacitive_negative_charge_names_dict[diffusive_capacitive_negative_charge_name] = {
+                'speed': speed,
+                'data1': (diffusive_capacitive_negative_charge_values.x_positions, diffusive_capacitive_negative_charge_values.barrasV_results[num][:, 0]),
+                'bottom1': np.zeros(len(diffusive_capacitive_negative_charge_values.x_positions)),
+                'label1': 'Pseudocapacitive',
+                'data2': (diffusive_capacitive_negative_charge_values.x_positions, diffusive_capacitive_negative_charge_values.barrasV_results[num][:, 1]),
+                'fmt2': 'o r', 
+                'bottom2': diffusive_capacitive_negative_charge_values.barrasV_results[num][:, 0],
+                'label2': 'Diffusive',
+                'data3': (diffusive_capacitive_negative_charge_values.x_positions, diffusive_capacitive_negative_charge_values.barrasV_results[num][:, 2]),
+                'fmt3': 'o r', 
+                'bottom3': diffusive_capacitive_negative_charge_values.barrasV_results[num][:, 0] + diffusive_capacitive_negative_charge_values.barrasV_results[num][:, 1],
+                'label3': 'Double Layer',
+                'title': f'{speeds[num]} mV/s',
+                #'title': f'{pestañas_superiores[15]} - {speeds[num]} mV/s',
+                'set_xticks': diffusive_capacitive_negative_charge_values.x_positions,
+                'set_xticklabels': ['{:.2f}'.format(val) for val in diffusive_capacitive_negative_charge_values.U],
+                'locator_params_axis': 'x',
+                'nbins': 10,
+                'x_label': REFERENCE_ELECTRODE,
+                'y_label': 'Specific Charge (C/g)',
+            }
+            insertogram_mass_neg_names_dict[insertogram_mass_neg_name] = {
+                'speed': speed,
+                'data_x': insertogram_mass_version_charge_neg_values.U,
+                'data_y': insertogram_mass_version_charge_neg_values.inser_results[num],
+                'x_label': REFERENCE_ELECTRODE,
+                'y_label': 'Active Thickness (nm)',
+                'title': f'{speeds[num]} mV/s'
+            }
+
+        # Crear gráficos en las pestañas correspondientes
+        # Velocidades dentro de Normalización
+        for normalization_name in normalization_names_list:
+            tab = ttk.Frame(normalizacion_notebook)
+            normalizacion_notebook.add(tab, text=normalization_name) 
+
+            graph = ZoomableGraph(tab, normalization_name)
+            graph.show()
+        # Velocidades dentro de Diffusive y Capacitive Currents
+        for diffusive_capacitive_currents_name in diffusive_capacitive_currents_names_list:
+            tab = ttk.Frame(diffusive_capacitive_currents_notebook)
+            diffusive_capacitive_currents_notebook.add(tab, text=diffusive_capacitive_currents_name) 
+
+            graph = ZoomableGraph(tab, diffusive_capacitive_currents_name)
+            graph.show()
+        # Velocidades dentro de Capacitive Current
+        for capacitive_current_name in capacitive_current_names_list:
+            tab = ttk.Frame(capacitive_current_notebook)
+            capacitive_current_notebook.add(tab, text=capacitive_current_name) 
+
+            graph = ZoomableGraph(tab, capacitive_current_name)
+            graph.show()
+        for diffusive_current_name in diffusive_current_names_list:
+            tab = ttk.Frame(diffusive_current_notebook)
+            diffusive_current_notebook.add(tab, text=diffusive_current_name) 
+
+            graph = ZoomableGraph(tab, diffusive_current_name)
+            graph.show()
+        # Velocidades dentro de las cargas capacitivas y difusivas
+        for diffusive_capacitive_charges_name in diffusive_capacitive_charges_names_list:
+            tab = ttk.Frame(diffusive_capacitive_charges_notebook)
+            diffusive_capacitive_charges_notebook.add(tab, text=diffusive_capacitive_charges_name) 
+
+            graph = ZoomableGraph(tab, diffusive_capacitive_charges_name)
+            graph.show()
+        # Massogram
+        for massogram_name in massogram_names_list:
+            tab = ttk.Frame(massogram_notebook)
+            massogram_notebook.add(tab, text=massogram_name) 
+
+            graph = ZoomableGraph(tab, massogram_name)
+            graph.show()
+        # Insertogram (Mass ver.)
+        for insertogram_mass_name in insertogram_mass_names_list:
+            tab = ttk.Frame(insertogram_mass_ver_notebook)
+            insertogram_mass_ver_notebook.add(tab, text=insertogram_mass_name) 
+
+            graph = ZoomableGraph(tab, insertogram_mass_name)
+            graph.show()
+        # Pos
+        for diffusive_capacitive_positive_charge_name in diffusive_capacitive_positive_charge_names_list:
+            tab = ttk.Frame(diffusive_capacitive_positive_charge_notebook)
+            diffusive_capacitive_positive_charge_notebook.add(tab, text=diffusive_capacitive_positive_charge_name) 
+
+            graph = ZoomableGraph(tab, diffusive_capacitive_positive_charge_name)
+            graph.show()
+        for insertogram_mass_pos_name in insertogram_mass_pos_names_list:
+            tab = ttk.Frame(insertogram_mass_ver_pos_notebook)
+            insertogram_mass_ver_pos_notebook.add(tab, text=insertogram_mass_pos_name) 
+
+            graph = ZoomableGraph(tab, insertogram_mass_pos_name)
+            graph.show()
+        # Neg
+        for diffusive_capacitive_negative_charge_name in diffusive_capacitive_negative_charge_names_list:
+            tab = ttk.Frame(diffusive_capacitive_negative_charge_notebook)
+            diffusive_capacitive_negative_charge_notebook.add(tab, text=diffusive_capacitive_negative_charge_name) 
+
+            graph = ZoomableGraph(tab, diffusive_capacitive_negative_charge_name)
+            graph.show()
+        for insertogram_mass_neg_name in insertogram_mass_neg_names_list:
+            tab = ttk.Frame(insertogram_mass_ver_neg_notebook)
+            insertogram_mass_ver_neg_notebook.add(tab, text=insertogram_mass_neg_name) 
+
+            graph = ZoomableGraph(tab, insertogram_mass_neg_name)
+            graph.show()
+
+        # Otros que no requieren pestañas inferiores
+        # Oxidation
+        graph = ZoomableGraph(oxidation_tab, pestañas_superiores[1])
+        graph.show()
+        # Reduction
+        graph = ZoomableGraph(reduction_tab, pestañas_superiores[2])
+        graph.show()
+        # Parameter B
+        graph = ZoomableGraph(parameterB_tab, pestañas_superiores[6])
+        graph.show()
+        # Specific Charge VS Sweed Speed
+        graph = ZoomableGraph(scharge_vs_sspeed_tab, pestañas_superiores[8])
+        graph.show()
+        # Percentage of Specific Charge
+        graph = ZoomableGraph(percentage_scharge_tab, pestañas_superiores[9])
+        graph.show()
+        # Masogram
+        #graph = ZoomableGraph(masogram_tab, pestañas_superiores[10])
+        #graph.show()
+        # Specific Charge VS Sweed Speed (+)
+        graph = ZoomableGraph(scharge_vs_sspeed_pos_tab, pestañas_superiores[13])
+        graph.show()
+        # Percentage of Specific Charge (+)
+        graph = ZoomableGraph(percentage_scharge_pos_tab, pestañas_superiores[14])
+        graph.show()
+        # Specific Charge VS Sweed Speed (-)
+        graph = ZoomableGraph(scharge_vs_sspeed_neg_tab, pestañas_superiores[16])
+        graph.show()
+        # Percentage of Specific Charge (-)
+        graph = ZoomableGraph(percentage_scharge_neg_tab, pestañas_superiores[17])
+        graph.show()
+
+        # Hacer que los frames sean expansibles
+        main_fm.columnconfigure(0, weight=1)
+        main_fm.rowconfigure(0, weight=1)
+
+    #Botones para el inicio del modelo 1 download,setings y continue
     # Button to download
     btn_download = Button(frame1, text='⬇ Download Files', font=('Arial', 10, 'bold'), bg='blue4', fg='white',activebackground='snow',activeforeground='blue4', command=ejecutar_descarga)
     btn_download.grid(row=4, column=0, columnspan=2, pady=2, padx=(10,10), sticky='nsew')  # Alinea a la derecha
@@ -719,429 +1120,13 @@ def modelo1_page():
     btn_settings.grid(row=5,column=0,columnspan=2,pady=2,padx=(10,10),sticky='nsew')
 
     #Button to continue
-    btn_continue = tk.Button(frame1, text='➡ Start', bg='blue4', fg='white', font=('Arial', 10, 'bold'),activebackground='snow',activeforeground='blue4')
+    btn_continue = tk.Button(frame1, text='➡ Start', bg='blue4', fg='white', font=('Arial', 10, 'bold'),activebackground='snow',activeforeground='blue4', command=ejecutar_graficos)
     btn_continue.grid(row=7,column=0,columnspan=2,pady=2,padx=(5,5),sticky='nsew')
 
     # Crear el segundo frame dentro del frame interior
     frame2 = Frame(inner_frame, bg='gray64')#ancho x alto
     frame2.config(width=200, height=700)
     frame2.grid(column=1, row=0, sticky='nsew')
-
-    
-
-    # Agregar el código TabView al frame2
-    app = PestañasVerticales(frame2)
-    app.pack(expand=True, fill='both')
-
-    # Crear pestañas (frames) dentro del notebook principal
-    normalizacion_tab = ttk.Frame(app)
-    oxidation_tab = ttk.Frame(app)
-    reduction_tab = ttk.Frame(app)
-    diffusive_capacitive_currents_tab = ttk.Frame(app)
-    capacitive_current_tab = ttk.Frame(app)
-    diffusive_current_tab = ttk.Frame(app)
-    parameterB_tab = ttk.Frame(app)
-    diffusive_capacitive_charges_tab = ttk.Frame(app)
-    scharge_vs_sspeed_tab = ttk.Frame(app)
-    percentage_scharge_tab = ttk.Frame(app)
-    masogram_tab = ttk.Frame(app)
-    insertogram_mass_ver_tab = ttk.Frame(app)
-    diffusive_capacitive_positive_charge_tab = ttk.Frame(app)
-    scharge_vs_sspeed_pos_tab = ttk.Frame(app)
-    percentage_scharge_pos_tab = ttk.Frame(app)
-    insertogram_mass_ver_pos_tab = ttk.Frame(app)
-    diffusive_capacitive_negative_charge_tab = ttk.Frame(app)
-    scharge_vs_sspeed_neg_tab = ttk.Frame(app)
-    percentage_scharge_neg_tab = ttk.Frame(app)
-    insertogram_mass_ver_neg_tab = ttk.Frame(app)
-
-    app.add(normalizacion_tab, pestañas_superiores[0])
-    app.add(oxidation_tab, pestañas_superiores[1])
-    app.add(reduction_tab, pestañas_superiores[2])
-    app.add(diffusive_capacitive_currents_tab, pestañas_superiores[3])
-    app.add(capacitive_current_tab, pestañas_superiores[4])
-    app.add(diffusive_current_tab, pestañas_superiores[5])
-    app.add(parameterB_tab, pestañas_superiores[6])
-    app.add(diffusive_capacitive_charges_tab, pestañas_superiores[7])
-    app.add(scharge_vs_sspeed_tab, pestañas_superiores[8])
-    app.add(percentage_scharge_tab, pestañas_superiores[9])
-    app.add(masogram_tab, pestañas_superiores[10])
-    app.add(insertogram_mass_ver_tab, pestañas_superiores[11])
-    app.add(diffusive_capacitive_positive_charge_tab, pestañas_superiores[12])
-    app.add(scharge_vs_sspeed_pos_tab, pestañas_superiores[13])
-    app.add(percentage_scharge_pos_tab, pestañas_superiores[14])
-    app.add(insertogram_mass_ver_pos_tab, pestañas_superiores[15])
-    app.add(diffusive_capacitive_negative_charge_tab, pestañas_superiores[16])
-    app.add(scharge_vs_sspeed_neg_tab, pestañas_superiores[17])
-    app.add(percentage_scharge_neg_tab, pestañas_superiores[18])
-    app.add(insertogram_mass_ver_neg_tab, pestañas_superiores[19])
-
-    # Crear notebooks adicionales dentro de cada pestaña para alojar los gráficos específicos
-    normalizacion_notebook = ttk.Notebook(normalizacion_tab)
-    normalizacion_notebook.pack(fill=tk.BOTH, expand=True)
-
-    diffusive_capacitive_currents_notebook = ttk.Notebook(diffusive_capacitive_currents_tab)
-    diffusive_capacitive_currents_notebook.pack(fill=tk.BOTH, expand=True)
-
-    capacitive_current_notebook = ttk.Notebook(capacitive_current_tab)
-    capacitive_current_notebook.pack(fill=tk.BOTH, expand=True)
-
-    diffusive_current_notebook = ttk.Notebook(diffusive_current_tab)
-    diffusive_current_notebook.pack(fill=tk.BOTH, expand=True)
-
-    diffusive_capacitive_charges_notebook = ttk.Notebook(diffusive_capacitive_charges_tab)
-    diffusive_capacitive_charges_notebook.pack(fill=tk.BOTH, expand=True)
-
-    massogram_notebook = ttk.Notebook(masogram_tab)
-    massogram_notebook.pack(fill=tk.BOTH, expand=True)
-
-    insertogram_mass_ver_notebook = ttk.Notebook(insertogram_mass_ver_tab)
-    insertogram_mass_ver_notebook.pack(fill=tk.BOTH, expand=True)
-
-    diffusive_capacitive_positive_charge_notebook = ttk.Notebook(diffusive_capacitive_positive_charge_tab)
-    diffusive_capacitive_positive_charge_notebook.pack(fill=tk.BOTH, expand=True)
-
-    insertogram_mass_ver_pos_notebook = ttk.Notebook(insertogram_mass_ver_pos_tab)
-    insertogram_mass_ver_pos_notebook.pack(fill=tk.BOTH, expand=True)
-
-    diffusive_capacitive_negative_charge_notebook = ttk.Notebook(diffusive_capacitive_negative_charge_tab)
-    diffusive_capacitive_negative_charge_notebook.pack(fill=tk.BOTH, expand=True)
-
-    insertogram_mass_ver_neg_notebook = ttk.Notebook(insertogram_mass_ver_neg_tab)
-    insertogram_mass_ver_neg_notebook.pack(fill=tk.BOTH, expand=True)
-
-    # Crear nombres de pestañas: Velocidades.
-    global normalization_names_list # Arreglo para almacenar los nombres generados
-    global normalization_names_dict # Diccionario para almacenar los datos
-    global diffusive_capacitive_currents_names_list
-    global diffusive_capacitive_currents_names_dict
-    global capacitive_current_names_list
-    global capacitive_current_names_dict
-    global diffusive_current_names_list
-    global diffusive_current_names_dict
-    global diffusive_capacitive_charges_names_list
-    global diffusive_capacitive_charges_names_dict
-    global massogram_names_list
-    global massogram_names_dict
-    global insertogram_mass_names_list
-    global insertogram_mass_names_dict
-    global diffusive_capacitive_positive_charge_names_list
-    global diffusive_capacitive_positive_charge_names_dict
-    global insertogram_mass_pos_names_list
-    global insertogram_mass_pos_names_dict
-    global diffusive_capacitive_negative_charge_names_list
-    global diffusive_capacitive_negative_charge_names_dict
-    global insertogram_mass_neg_names_list
-    global insertogram_mass_neg_names_dict
-
-    for num, speed in enumerate(speeds):
-        # Generar nombres y agregar al arreglo
-        normalization_name = f"{speed} mV/s - {pestañas_superiores[0]}"
-        normalization_names_list.append(normalization_name)
-        diffusive_capacitive_currents_name = f"{speed} mV/s - {pestañas_superiores[3]}"
-        diffusive_capacitive_currents_names_list.append(diffusive_capacitive_currents_name)
-        capacitive_current_name = f"{speed} mV/s - {pestañas_superiores[4]}"
-        capacitive_current_names_list.append(capacitive_current_name)
-        diffusive_current_name = f"{speed} mV/s - {pestañas_superiores[5]}"
-        diffusive_current_names_list.append(diffusive_current_name)
-        diffusive_capacitive_charges_name = f"{speed} mV/s - {pestañas_superiores[7]}"
-        diffusive_capacitive_charges_names_list.append(diffusive_capacitive_charges_name)
-        massogram_name = f"{speed} mV/s - {pestañas_superiores[10]}"
-        massogram_names_list.append(massogram_name)
-        insertogram_mass_name = f"{speed} mV/s - {pestañas_superiores[11]}"
-        insertogram_mass_names_list.append(insertogram_mass_name)
-        diffusive_capacitive_positive_charge_name = f"{speed} mV/s - {pestañas_superiores[12]}"
-        diffusive_capacitive_positive_charge_names_list.append(diffusive_capacitive_positive_charge_name)
-        insertogram_mass_pos_name = f"{speed} mV/s - {pestañas_superiores[15]}"
-        insertogram_mass_pos_names_list.append(insertogram_mass_pos_name)
-        diffusive_capacitive_negative_charge_name = f"{speed} mV/s - {pestañas_superiores[16]}"
-        diffusive_capacitive_negative_charge_names_list.append(diffusive_capacitive_negative_charge_name)
-        insertogram_mass_neg_name = f"{speed} mV/s - {pestañas_superiores[19]}"
-        insertogram_mass_neg_names_list.append(insertogram_mass_neg_name)
-        
-        # Para 'normalization'
-        normalization_names_dict[normalization_name] = {
-            'speed': speed,
-            'data': (normalizacion_values.UExp_results[num], normalizacion_values.IExp_results[num]),
-            'fmt': 'o b', 'label': f'{int(speeds[num])} mV/s',
-            'title': 'Normalization', 'x_major_formatter': mticker.FormatStrFormatter('%.2f'),
-            'x_major_locator': mticker.MaxNLocator(5), 'x_minor_locator': AutoMinorLocator(3),
-            'y_major_formatter': mticker.FormatStrFormatter('%.2f'), 'y_major_locator': mticker.MaxNLocator(7),
-            'y_minor_locator': AutoMinorLocator(5),
-            'x_label': REFERENCE_ELECTRODE,
-            'y_label': DENSIDAD_DE_CORRIENTE
-        }
-        # Para 'Diffusive & Capacitive Currents'
-        diffusive_capacitive_currents_names_dict[diffusive_capacitive_currents_name] = {
-            'speed': speed,
-            'data1': (diffusive_capacitive_currents_values.UExp_results[num], diffusive_capacitive_currents_values.IExp_results[num]),
-            'fmt1': 'o b', 
-            'markersize1': 2,
-            'data2': (diffusive_capacitive_currents_values.U, diffusive_capacitive_currents_values.Imodelpos[:, num]),
-            'fmt2': 'o r', 
-            'markersize2': 2,
-            'data3': (diffusive_capacitive_currents_values.U, diffusive_capacitive_currents_values.Imodelneg[:, num]),
-            'fmt3': 'o r', 
-            'markersize3': 2,
-            'title': f'{pestañas_superiores[4]} - {speeds[num]}mV/s',
-            'x_major_formatter': mticker.FormatStrFormatter('%.1f'),
-            'x_major_locator': mticker.MaxNLocator(5), 'x_minor_locator': AutoMinorLocator(3),
-            'x_label': REFERENCE_ELECTRODE,
-            'y_label': DENSIDAD_DE_CORRIENTE,
-            'legend': ['Experimental', 'Theoretical']
-        }
-        # Para 'Capacitive Currents'
-        capacitive_current_names_dict[capacitive_current_name] = {
-            'speed': speed,
-            'data1': (capacitive_current_values.UExp_results[num], capacitive_current_values.IExp_results[num]),
-            'fmt1': 'o b', 
-            'markersize1': 2,
-            'data2': (capacitive_current_values.U, capacitive_current_values.Imodel_1pos[:, num]),
-            'fmt2': 'o r', 
-            'markersize2': 2,
-            'data3': (capacitive_current_values.U, capacitive_current_values.Imodel_1neg[:, num]),
-            'fmt3': 'o r', 
-            'markersize3': 2,
-            'title': f'{pestañas_superiores[5]} - {speeds[num]}mV/s',
-            'x_major_formatter': mticker.FormatStrFormatter('%.1f'),
-            'x_major_locator': mticker.MaxNLocator(5), 'x_minor_locator': AutoMinorLocator(3),
-            'x_label': REFERENCE_ELECTRODE,
-            'y_label': DENSIDAD_DE_CORRIENTE,
-            'legend': ['Experimental', 'Theoretical']
-        }
-        # Para 'Diffusive Currents'
-        diffusive_current_names_dict[diffusive_current_name] = {
-            'speed': speed,
-            'data1': (diffusive_current_values.UExp_results[num], diffusive_current_values.IExp_results[num]),
-            'fmt1': 'o b', 
-            'markersize1': 2,
-            'data2': (diffusive_current_values.U, diffusive_current_values.Imodel_2pos[:, num]),
-            'fmt2': 'o r', 
-            'markersize2': 2,
-            'data3': (diffusive_current_values.U, diffusive_current_values.Imodel_2neg[:, num]),
-            'fmt3': 'o r', 
-            'markersize3': 2,
-            'title': f'{pestañas_superiores[5]} - {speeds[num]}mV/s',
-            'x_major_formatter': mticker.FormatStrFormatter('%.1f'),
-            'x_major_locator': mticker.MaxNLocator(5), 'x_minor_locator': AutoMinorLocator(3),
-            'x_label': REFERENCE_ELECTRODE,
-            'y_label': DENSIDAD_DE_CORRIENTE,
-            'legend': ['Experimental', 'Theoretical']
-        }
-        # Para 'Capacitive & Diffusive Charges'
-        diffusive_capacitive_charges_names_dict[diffusive_capacitive_charges_name] = {
-            'speed': speed,
-            'data1': (diffusive_capacitive_charges_values.x_positions, diffusive_capacitive_charges_values.barrasV_results[num][:, 0]),
-            'bottom1': np.zeros(len(diffusive_capacitive_charges_values.x_positions)),
-            'label1': 'Pseudocapacitive',
-            'data2': (diffusive_capacitive_charges_values.x_positions, diffusive_capacitive_charges_values.barrasV_results[num][:, 1]),
-            'fmt2': 'o r', 
-            'bottom2': diffusive_capacitive_charges_values.barrasV_results[num][:, 0],
-            'label2': 'Diffusive',
-            'data3': (diffusive_capacitive_charges_values.x_positions, diffusive_capacitive_charges_values.barrasV_results[num][:, 2]),
-            'fmt3': 'o r', 
-            'bottom3': diffusive_capacitive_charges_values.barrasV_results[num][:, 0] + diffusive_capacitive_charges_values.barrasV_results[num][:, 1],
-            'label3': 'Double Layer',
-            'title': f'{speeds[num]} mV/s',
-            #'title': f'{pestañas_superiores[11]} - {speeds[num]} mV/s',
-            'set_xticks': diffusive_capacitive_charges_values.x_positions,
-            'set_xticklabels': ['{:.2f}'.format(val) for val in diffusive_capacitive_charges_values.U],
-            'locator_params_axis': 'x',
-            'nbins': 10,
-            'x_label': REFERENCE_ELECTRODE,
-            'y_label': 'Specific Charge (C/g)',
-        }
-        massogram_names_dict[massogram_name] = {
-            'speed': speed,
-            'data_x_blue': masogram_values.U,
-            'data_y_blue_1': masogram_values.masspos_results[num],
-            'data_y_blue_2': masogram_values.massneg_results[num],
-            'data_x_red': masogram_values.UExp,
-            'data_y_red': masogram_values.IExp,
-            'title': f'{speeds[num]} mV/s'
-        }
-        insertogram_mass_names_dict[insertogram_mass_name] = {
-            'speed': speed,
-            'data_x': insertogram_mass_values.U,
-            'data_y': insertogram_mass_values.inser_results[num],
-            'x_label': REFERENCE_ELECTRODE,
-            'y_label': 'Active Thickness (nm)',
-            'title': f'{speeds[num]} mV/s'
-        }
-        # Para 'Capacitive & Diffusive Positive Charge'
-        diffusive_capacitive_positive_charge_names_dict[diffusive_capacitive_positive_charge_name] = {
-            'speed': speed,
-            'data1': (diffusive_capacitive_positive_charge_values.x_positions, diffusive_capacitive_positive_charge_values.barrasV_results[num][:, 0]),
-            'bottom1': np.zeros(len(diffusive_capacitive_positive_charge_values.x_positions)),
-            'label1': 'Pseudocapacitive',
-            'data2': (diffusive_capacitive_positive_charge_values.x_positions, diffusive_capacitive_positive_charge_values.barrasV_results[num][:, 1]),
-            'fmt2': 'o r', 
-            'bottom2': diffusive_capacitive_positive_charge_values.barrasV_results[num][:, 0],
-            'label2': 'Diffusive',
-            'data3': (diffusive_capacitive_positive_charge_values.x_positions, diffusive_capacitive_positive_charge_values.barrasV_results[num][:, 2]),
-            'fmt3': 'o r', 
-            'bottom3': diffusive_capacitive_positive_charge_values.barrasV_results[num][:, 0] + diffusive_capacitive_positive_charge_values.barrasV_results[num][:, 1],
-            'label3': 'Double Layer',
-            'title': f'{speeds[num]} mV/s',
-            #'title': f'{pestañas_superiores[12]} - {speeds[num]} mV/s',
-            'set_xticks': diffusive_capacitive_positive_charge_values.x_positions,
-            'set_xticklabels': ['{:.2f}'.format(val) for val in diffusive_capacitive_positive_charge_values.U],
-            'locator_params_axis': 'x',
-            'nbins': 10,
-            'x_label': REFERENCE_ELECTRODE,
-            'y_label': 'Specific Charge (C/g)',
-        }
-        insertogram_mass_pos_names_dict[insertogram_mass_pos_name] = {
-            'speed': speed,
-            'data_x': insertogram_mass_version_charge_pos_values.U,
-            'data_y': insertogram_mass_version_charge_pos_values.inser_results[num],
-            'x_label': REFERENCE_ELECTRODE,
-            'y_label': 'Active Thickness (nm)',
-            'title': f'{speeds[num]} mV/s'
-        }
-        # Para 'Capacitive & Diffusive Negative Charge'
-        diffusive_capacitive_negative_charge_names_dict[diffusive_capacitive_negative_charge_name] = {
-            'speed': speed,
-            'data1': (diffusive_capacitive_negative_charge_values.x_positions, diffusive_capacitive_negative_charge_values.barrasV_results[num][:, 0]),
-            'bottom1': np.zeros(len(diffusive_capacitive_negative_charge_values.x_positions)),
-            'label1': 'Pseudocapacitive',
-            'data2': (diffusive_capacitive_negative_charge_values.x_positions, diffusive_capacitive_negative_charge_values.barrasV_results[num][:, 1]),
-            'fmt2': 'o r', 
-            'bottom2': diffusive_capacitive_negative_charge_values.barrasV_results[num][:, 0],
-            'label2': 'Diffusive',
-            'data3': (diffusive_capacitive_negative_charge_values.x_positions, diffusive_capacitive_negative_charge_values.barrasV_results[num][:, 2]),
-            'fmt3': 'o r', 
-            'bottom3': diffusive_capacitive_negative_charge_values.barrasV_results[num][:, 0] + diffusive_capacitive_negative_charge_values.barrasV_results[num][:, 1],
-            'label3': 'Double Layer',
-            'title': f'{speeds[num]} mV/s',
-            #'title': f'{pestañas_superiores[15]} - {speeds[num]} mV/s',
-            'set_xticks': diffusive_capacitive_negative_charge_values.x_positions,
-            'set_xticklabels': ['{:.2f}'.format(val) for val in diffusive_capacitive_negative_charge_values.U],
-            'locator_params_axis': 'x',
-            'nbins': 10,
-            'x_label': REFERENCE_ELECTRODE,
-            'y_label': 'Specific Charge (C/g)',
-        }
-        insertogram_mass_neg_names_dict[insertogram_mass_neg_name] = {
-            'speed': speed,
-            'data_x': insertogram_mass_version_charge_neg_values.U,
-            'data_y': insertogram_mass_version_charge_neg_values.inser_results[num],
-            'x_label': REFERENCE_ELECTRODE,
-            'y_label': 'Active Thickness (nm)',
-            'title': f'{speeds[num]} mV/s'
-        }
-
-    # Crear gráficos en las pestañas correspondientes
-    # Velocidades dentro de Normalización
-    for normalization_name in normalization_names_list:
-        tab = ttk.Frame(normalizacion_notebook)
-        normalizacion_notebook.add(tab, text=normalization_name) 
-
-        graph = ZoomableGraph(tab, normalization_name)
-        graph.show()
-    # Velocidades dentro de Diffusive y Capacitive Currents
-    for diffusive_capacitive_currents_name in diffusive_capacitive_currents_names_list:
-        tab = ttk.Frame(diffusive_capacitive_currents_notebook)
-        diffusive_capacitive_currents_notebook.add(tab, text=diffusive_capacitive_currents_name) 
-
-        graph = ZoomableGraph(tab, diffusive_capacitive_currents_name)
-        graph.show()
-    # Velocidades dentro de Capacitive Current
-    for capacitive_current_name in capacitive_current_names_list:
-        tab = ttk.Frame(capacitive_current_notebook)
-        capacitive_current_notebook.add(tab, text=capacitive_current_name) 
-
-        graph = ZoomableGraph(tab, capacitive_current_name)
-        graph.show()
-    for diffusive_current_name in diffusive_current_names_list:
-        tab = ttk.Frame(diffusive_current_notebook)
-        diffusive_current_notebook.add(tab, text=diffusive_current_name) 
-
-        graph = ZoomableGraph(tab, diffusive_current_name)
-        graph.show()
-    # Velocidades dentro de las cargas capacitivas y difusivas
-    for diffusive_capacitive_charges_name in diffusive_capacitive_charges_names_list:
-        tab = ttk.Frame(diffusive_capacitive_charges_notebook)
-        diffusive_capacitive_charges_notebook.add(tab, text=diffusive_capacitive_charges_name) 
-
-        graph = ZoomableGraph(tab, diffusive_capacitive_charges_name)
-        graph.show()
-    # Massogram
-    for massogram_name in massogram_names_list:
-        tab = ttk.Frame(massogram_notebook)
-        massogram_notebook.add(tab, text=massogram_name) 
-
-        graph = ZoomableGraph(tab, massogram_name)
-        graph.show()
-    # Insertogram (Mass ver.)
-    for insertogram_mass_name in insertogram_mass_names_list:
-        tab = ttk.Frame(insertogram_mass_ver_notebook)
-        insertogram_mass_ver_notebook.add(tab, text=insertogram_mass_name) 
-
-        graph = ZoomableGraph(tab, insertogram_mass_name)
-        graph.show()
-    # Pos
-    for diffusive_capacitive_positive_charge_name in diffusive_capacitive_positive_charge_names_list:
-        tab = ttk.Frame(diffusive_capacitive_positive_charge_notebook)
-        diffusive_capacitive_positive_charge_notebook.add(tab, text=diffusive_capacitive_positive_charge_name) 
-
-        graph = ZoomableGraph(tab, diffusive_capacitive_positive_charge_name)
-        graph.show()
-    for insertogram_mass_pos_name in insertogram_mass_pos_names_list:
-        tab = ttk.Frame(insertogram_mass_ver_pos_notebook)
-        insertogram_mass_ver_pos_notebook.add(tab, text=insertogram_mass_pos_name) 
-
-        graph = ZoomableGraph(tab, insertogram_mass_pos_name)
-        graph.show()
-    # Neg
-    for diffusive_capacitive_negative_charge_name in diffusive_capacitive_negative_charge_names_list:
-        tab = ttk.Frame(diffusive_capacitive_negative_charge_notebook)
-        diffusive_capacitive_negative_charge_notebook.add(tab, text=diffusive_capacitive_negative_charge_name) 
-
-        graph = ZoomableGraph(tab, diffusive_capacitive_negative_charge_name)
-        graph.show()
-    for insertogram_mass_neg_name in insertogram_mass_neg_names_list:
-        tab = ttk.Frame(insertogram_mass_ver_neg_notebook)
-        insertogram_mass_ver_neg_notebook.add(tab, text=insertogram_mass_neg_name) 
-
-        graph = ZoomableGraph(tab, insertogram_mass_neg_name)
-        graph.show()
-
-    # Otros que no requieren pestañas inferiores
-    # Oxidation
-    graph = ZoomableGraph(oxidation_tab, pestañas_superiores[1])
-    graph.show()
-    # Reduction
-    graph = ZoomableGraph(reduction_tab, pestañas_superiores[2])
-    graph.show()
-    # Parameter B
-    graph = ZoomableGraph(parameterB_tab, pestañas_superiores[6])
-    graph.show()
-    # Specific Charge VS Sweed Speed
-    graph = ZoomableGraph(scharge_vs_sspeed_tab, pestañas_superiores[8])
-    graph.show()
-    # Percentage of Specific Charge
-    graph = ZoomableGraph(percentage_scharge_tab, pestañas_superiores[9])
-    graph.show()
-    # Masogram
-    #graph = ZoomableGraph(masogram_tab, pestañas_superiores[10])
-    #graph.show()
-    # Specific Charge VS Sweed Speed (+)
-    graph = ZoomableGraph(scharge_vs_sspeed_pos_tab, pestañas_superiores[13])
-    graph.show()
-    # Percentage of Specific Charge (+)
-    graph = ZoomableGraph(percentage_scharge_pos_tab, pestañas_superiores[14])
-    graph.show()
-    # Specific Charge VS Sweed Speed (-)
-    graph = ZoomableGraph(scharge_vs_sspeed_neg_tab, pestañas_superiores[16])
-    graph.show()
-    # Percentage of Specific Charge (-)
-    graph = ZoomableGraph(percentage_scharge_neg_tab, pestañas_superiores[17])
-    graph.show()
-
-    # Hacer que los frames sean expansibles
-    main_fm.columnconfigure(0, weight=1)
-    main_fm.rowconfigure(0, weight=1)
 
 def modelo2_page():
     modelo2_page_fm = tk.Frame(main_fm)#Para cambiar el fondo , bg='gray'
