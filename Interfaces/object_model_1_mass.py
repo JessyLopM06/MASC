@@ -1,6 +1,6 @@
 from archivos import file_paths, veloc
 
-class Model_1_Mass_Object():
+class Object_Model_1_Mass_():
 
     def __init__(self, reference_electrode=None, active_mass=None, speeds=None, div_win=None, DLC=None, Mmol=None, mol_weight = None, density=None, electrons=None, surface_area=None):
 

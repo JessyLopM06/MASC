@@ -4,7 +4,8 @@ import matplotlib.pyplot as plt
 from scipy.interpolate import interp1d
 import matplotlib.ticker as mticker
 from matplotlib.ticker import AutoMinorLocator
-from shared import div_win, speeds, reduced_speeds, file_paths, active_mass, DLC, Mmol, mass_elec, mol_weight, electrons, density, surface_area
+from get_mass_variables import div_win, speeds, reduced_speeds, file_paths, active_mass, DLC, Mmol, mass_elec, mol_weight, electrons, density, surface_area
+from archivos import file_paths, veloc
 
 def obtener_tamaño(lista):
     tamaño = []
