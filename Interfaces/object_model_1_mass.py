@@ -1,16 +1,14 @@
-from settings_model_1 import file_paths, speeds
-
-class Object_Model_1_Mass_():
+class Object_Model_1_Mass():
 
     def __init__(self, reference_electrode=None, active_mass=None, speeds=None, div_win=None, DLC=None, Mmol=None, mol_weight = None, density=None, electrons=None, surface_area=None):
 
-        # Constantes
-        self.CONSTANT_CHARGES = 3.6
-        self.DENSIDAD_DE_CORRIENTE = 'j(Ag\u207B\u00B9)'
-        self.MASS_UG = 'mass (mg)'
+        # # Constantes
+        # self.CONSTANT_CHARGES = 3.6
+        # self.DENSIDAD_DE_CORRIENTE = 'j(Ag\u207B\u00B9)'
+        # self.MASS_UG = 'mass (mg)'
 
         # Variables
-        self.file_paths = file_paths
+        self.file_paths = []
         self.speeds = speeds
 
         self.active_mass = active_mass # USER (Mass of active material (g))
@@ -19,9 +17,12 @@ class Object_Model_1_Mass_():
         self.div_win = div_win # USER (Potential steps)
         self.electrons = electrons # USER (Number of electrons)
         self.DLC = DLC  # C/g USER (Electric Double layer capacitance) 
-        self.reference_electrode = reference_electrode #'E (V vs Hg/HgO)' Reference Electrode
+        self.REFERENCE_ELECTRODE = reference_electrode #'E (V vs Hg/HgO)' Reference Electrode
         self.Mmol = Mmol  # g/mol USER (Molar mass of active ion (g/mol))
         self.surface_area = surface_area  # cm^2/g USER (Specific surface area)
 
         # Derivadas
         #self.reduced_speeds = speeds * 0.001
+
+    def obtener_valores(self):
+        return self.file_paths, self.active_mass, self.density, self.mol_weight, self.div_win, self.electrons, self.DLC, self.REFERENCE_ELECTRODE, self.Mmol, self.surface_area

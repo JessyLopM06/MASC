@@ -3,6 +3,7 @@ Este modulo proporciona una interfaz de masa_activa de usuario utilizando tkinte
 """
 import tkinter as tk
 from tkinter import messagebox
+from object_model_1_mass import Object_Model_1_Mass
 
 def ejecutar_mass_variables():
     root = tk.Tk()
@@ -97,14 +98,25 @@ def ejecutar_mass_variables():
     surface_area_entry.grid(row=8, column=1, pady=8, padx=10, sticky='w')
 
     def cerrar_ventana():
+        global object
         active_mass, density, mol_weight, div_win, electrons, DLC, REFERENCE_ELECTRODE, Mmol, surface_area = obtener_valores()
-        print(f'{active_mass}')
         # Verificar si algún campo está vacío
         if not all((active_mass, density, mol_weight, div_win, electrons, DLC, REFERENCE_ELECTRODE, Mmol, surface_area)):
             # Mostrar mensaje de advertencia
             messagebox.showwarning("Campos vacíos", "Por favor complete todos los campos.")
         else:
             # Cerrar la ventana si todos los campos están completos
+            object = Object_Model_1_Mass()
+            object.active_mass = active_mass
+            object.density = density
+            object.mol_weight = mol_weight
+            object.div_win = div_win
+            object.electrons = electrons
+            object.DLC = DLC
+            object.REFERENCE_ELECTRODE = REFERENCE_ELECTRODE
+            object.Mmol = Mmol
+            object.surface_area = surface_area
+            
             root.destroy()
 
     # Botón "Aceptar"

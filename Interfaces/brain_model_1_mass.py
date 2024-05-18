@@ -4,11 +4,25 @@ import matplotlib.pyplot as plt
 from scipy.interpolate import interp1d
 import matplotlib.ticker as mticker
 from matplotlib.ticker import AutoMinorLocator
-from get_mass_variables import obtener_valores
-from settings_model_1 import obtener_archivos_y_velocidades
+import get_mass_variables
 
-active_mass, density, mol_weight, div_win, electrons, DLC, REFERENCE_ELECTRODE, Mmol, surface_area = obtener_valores()
-file_paths, speeds = obtener_archivos_y_velocidades()
+# Constantes
+CONSTANT_CHARGES = 3.6
+DENSIDAD_DE_CORRIENTE = 'j(Ag\u207B\u00B9)'
+MASS_UG = 'mass (mg)'
+
+active_mass= float(get_mass_variables.object.active_mass)
+density = float(get_mass_variables.object.density)
+mol_weight = float(get_mass_variables.object.mol_weight)
+div_win = int(get_mass_variables.object.div_win)
+electrons = int(get_mass_variables.object.electrons)
+DLC = float(get_mass_variables.object.DLC)
+REFERENCE_ELECTRODE= get_mass_variables.object.REFERENCE_ELECTRODE
+Mmol = float(get_mass_variables.object.Mmol)
+surface_area = float(get_mass_variables.object.surface_area)
+
+file_paths = get_mass_variables.object.file_paths
+speeds = np.array(get_mass_variables.object.speeds, dtype=np.float64)
 reduced_speeds = speeds * 0.001
 
 def obtener_tamaño(lista):
