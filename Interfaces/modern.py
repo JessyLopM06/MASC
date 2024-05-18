@@ -4,7 +4,7 @@ Este módulo proporciona una interfaz de los menu del modelo 1-3 utilizando tkin
 
 import tkinter as tk
 import os
-from tkinter import*
+from tkinter import *
 from tkinter import Frame
 from tkinter import filedialog 
 
@@ -18,13 +18,14 @@ import tkinter.ttk as ttk
 import tkinter as tk
 from tkinter import ttk
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg, NavigationToolbar2Tk
-from cerebro_modelo import Normalizacion, Oxidation, Reduction, Diffusive_Capacitive, Capacitive_Current, Diffusive_Current, ParameterB,Diffusive_Capacitive_Charges, SpecificChargeVSSweepSpeed, PercentageofSpecificCharge, Diffusive_Capacitive_Positive_Charge, SpecificChargeVSSweepSpeedPos, PercentageofSpecificChargePos, Diffusive_Capacitive_Negative_Charge, SpecificChargeVSSweepSpeedNeg, PercentageofSpecificChargeNeg, Masogram, InsertogramMassVersion, InsertogramAreaVersion, InsertogramMassVersionChargePos, InsertogramMassVersionChargeNeg
+from brain_model_1_mass import Normalizacion, Oxidation, Reduction, Diffusive_Capacitive, Capacitive_Current, Diffusive_Current, ParameterB,Diffusive_Capacitive_Charges, SpecificChargeVSSweepSpeed, PercentageofSpecificCharge, Diffusive_Capacitive_Positive_Charge, SpecificChargeVSSweepSpeedPos, PercentageofSpecificChargePos, Diffusive_Capacitive_Negative_Charge, SpecificChargeVSSweepSpeedNeg, PercentageofSpecificChargeNeg, Masogram, InsertogramMassVersion, InsertogramAreaVersion, InsertogramMassVersionChargePos, InsertogramMassVersionChargeNeg
 import matplotlib.pyplot as plt
 from scipy.interpolate import interp1d
 import matplotlib.ticker as mticker
 from matplotlib.ticker import AutoMinorLocator
 import numpy as np
 from shared import speeds, DENSIDAD_DE_CORRIENTE, REFERENCE_ELECTRODE, MASS_UG
+import settings_model_1
 
 normalizacion_values = Normalizacion()
 oxidation_values = Oxidation()
@@ -541,7 +542,7 @@ def ejecutar_settings():
 #conforme a eso se va apoder saber cuando el usuario ingrese la velocidad de barrido
 #a que archivo pertenece"""
 
-    subprocess.Popen(["python", "Interfaces/archivos.py"])
+    subprocess.Popen(["python", "Interfaces/settings_model_1.py"])
 
 root = tk.Tk()
 root.geometry('1000x1000')#Ancho x Largo
@@ -1116,7 +1117,7 @@ def modelo1_page():
     btn_download.grid(row=4, column=0, columnspan=2, pady=2, padx=(10,10), sticky='nsew')  # Alinea a la derecha
     
     #Button to setiings
-    btn_settings = Button(frame1, text='⚙ Settings', bg='blue4', fg='white', font=('Arial', 10, 'bold'),activeforeground='blue4',command=ejecutar_settings)
+    btn_settings = Button(frame1, text='⚙ Settings', bg='blue4', fg='white', font=('Arial', 10, 'bold'),activeforeground='blue4',command=settings_model_1.ejecutar_settings)
     btn_settings.grid(row=5,column=0,columnspan=2,pady=2,padx=(10,10),sticky='nsew')
 
     #Button to continue

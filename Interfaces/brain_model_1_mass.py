@@ -4,8 +4,12 @@ import matplotlib.pyplot as plt
 from scipy.interpolate import interp1d
 import matplotlib.ticker as mticker
 from matplotlib.ticker import AutoMinorLocator
-from get_mass_variables import div_win, speeds, reduced_speeds, file_paths, active_mass, DLC, Mmol, mass_elec, mol_weight, electrons, density, surface_area
-from archivos import file_paths, veloc
+from get_mass_variables import obtener_valores
+from settings_model_1 import obtener_archivos_y_velocidades
+
+active_mass, density, mol_weight, div_win, electrons, DLC, REFERENCE_ELECTRODE, Mmol, surface_area = obtener_valores()
+file_paths, speeds = obtener_archivos_y_velocidades()
+reduced_speeds = speeds * 0.001
 
 def obtener_tamaño(lista):
     tamaño = []
@@ -337,7 +341,7 @@ class Masogram():
         self.masspos = np.empty(100) # Revised
         self.massneg = np.empty(100) # Revised, small variations
         self.Mmol = Mmol
-        self.mass_elec = mass_elec
+        self.mass_elec = active_mass
         self.time_diff = diffusive_capacitive_charges_instance.time_diff
         self.U = normalizacion_instance.U
 

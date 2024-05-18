@@ -1,4 +1,4 @@
-from archivos import file_paths, veloc
+from settings_model_1 import file_paths, speeds
 
 class Object_Model_1_Mass_():
 
@@ -11,7 +11,7 @@ class Object_Model_1_Mass_():
 
         # Variables
         self.file_paths = file_paths
-        self.speeds = veloc
+        self.speeds = speeds
 
         self.active_mass = active_mass # USER (Mass of active material (g))
         self.density = density  # g/cm3 USER (Active material density)
@@ -24,4 +24,4 @@ class Object_Model_1_Mass_():
         self.surface_area = surface_area  # cm^2/g USER (Specific surface area)
 
         # Derivadas
-        self.reduced_speeds = speeds * 0.001
+        #self.reduced_speeds = speeds * 0.001
