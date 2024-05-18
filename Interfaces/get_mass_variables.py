@@ -2,6 +2,7 @@
 Este modulo proporciona una interfaz de masa_activa de usuario utilizando tkinter.
 """
 import tkinter as tk
+from tkinter import messagebox
 
 def ejecutar_mass_variables():
     root = tk.Tk()
@@ -13,17 +14,7 @@ def ejecutar_mass_variables():
     root.title("Active Mass")
 
     # Definir las variables globales
-    global active_mass, density, mol_weight, div_win, electrons, DLC, REFERENCE_ELECTRODE, Mmol, surface_area
-
-    active_mass = tk.StringVar()
-    density = tk.StringVar()
-    mol_weight = tk.StringVar()
-    div_win = tk.StringVar()
-    electrons = tk.StringVar()
-    DLC = tk.StringVar()
-    REFERENCE_ELECTRODE = tk.StringVar()
-    Mmol = tk.StringVar()
-    surface_area = tk.StringVar()
+    global active_mass_entry, density_entry, mol_weight_entry, div_win_entry, electrons_entry, DLC_entry, REFERENCE_ELECTRODE_entry, Mmol_entry, surface_area_entry
 
     # Mass of active material
     active_mass_label = tk.Label(root, text='Mass of active material :', bg='#003399',
@@ -106,7 +97,15 @@ def ejecutar_mass_variables():
     surface_area_entry.grid(row=8, column=1, pady=8, padx=10, sticky='w')
 
     def cerrar_ventana():
-        root.destroy()
+        active_mass, density, mol_weight, div_win, electrons, DLC, REFERENCE_ELECTRODE, Mmol, surface_area = obtener_valores()
+        print(f'{active_mass}')
+        # Verificar si algún campo está vacío
+        if not all((active_mass, density, mol_weight, div_win, electrons, DLC, REFERENCE_ELECTRODE, Mmol, surface_area)):
+            # Mostrar mensaje de advertencia
+            messagebox.showwarning("Campos vacíos", "Por favor complete todos los campos.")
+        else:
+            # Cerrar la ventana si todos los campos están completos
+            root.destroy()
 
     # Botón "Aceptar"
     boton_aceptar = tk.Button(root, text="✔Aceptar", command=cerrar_ventana, bg="blue4",
@@ -116,4 +115,4 @@ def ejecutar_mass_variables():
     root.mainloop()
 
 def obtener_valores():
-    return active_mass.get(), density.get(), mol_weight.get(), div_win.get(), electrons.get(), DLC.get(), REFERENCE_ELECTRODE.get(), Mmol.get(), surface_area.get()
+    return active_mass_entry.get(), density_entry.get(), mol_weight_entry.get(), div_win_entry.get(), electrons_entry.get(), DLC_entry.get(), REFERENCE_ELECTRODE_entry.get(), Mmol_entry.get(), surface_area_entry.get()

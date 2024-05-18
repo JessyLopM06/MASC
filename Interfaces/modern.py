@@ -18,60 +18,15 @@ import tkinter.ttk as ttk
 import tkinter as tk
 from tkinter import ttk
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg, NavigationToolbar2Tk
-from brain_model_1_mass import Normalizacion, Oxidation, Reduction, Diffusive_Capacitive, Capacitive_Current, Diffusive_Current, ParameterB,Diffusive_Capacitive_Charges, SpecificChargeVSSweepSpeed, PercentageofSpecificCharge, Diffusive_Capacitive_Positive_Charge, SpecificChargeVSSweepSpeedPos, PercentageofSpecificChargePos, Diffusive_Capacitive_Negative_Charge, SpecificChargeVSSweepSpeedNeg, PercentageofSpecificChargeNeg, Masogram, InsertogramMassVersion, InsertogramAreaVersion, InsertogramMassVersionChargePos, InsertogramMassVersionChargeNeg
 import matplotlib.pyplot as plt
 from scipy.interpolate import interp1d
 import matplotlib.ticker as mticker
 from matplotlib.ticker import AutoMinorLocator
 import numpy as np
 from shared import speeds, DENSIDAD_DE_CORRIENTE, REFERENCE_ELECTRODE, MASS_UG
-import settings_model_1
-
-normalizacion_values = Normalizacion()
-oxidation_values = Oxidation()
-reduction_values = Reduction()
-parameterB_values = ParameterB()
-diffusive_capacitive_currents_values = Diffusive_Capacitive()
-capacitive_current_values = Capacitive_Current()
-diffusive_current_values = Diffusive_Current()
-diffusive_capacitive_charges_values = Diffusive_Capacitive_Charges()
-scharge_vs_sspeed_values = SpecificChargeVSSweepSpeed()
-percentage_specific_charge_values = PercentageofSpecificCharge()
-masogram_values = Masogram()
-insertogram_mass_values = InsertogramMassVersion()
-diffusive_capacitive_positive_charge_values = Diffusive_Capacitive_Positive_Charge()
-scharge_vs_sspeed_pos_values = SpecificChargeVSSweepSpeedPos()
-percentage_specific_charge_pos_values = PercentageofSpecificChargePos()
-diffusive_capacitive_negative_charge_values = Diffusive_Capacitive_Negative_Charge()
-scharge_vs_sspeed_neg_values = SpecificChargeVSSweepSpeedNeg()
-percentage_specific_charge_neg_values = PercentageofSpecificChargeNeg()
-insertogram_mass_version_charge_pos_values = InsertogramMassVersionChargePos()
-insertogram_mass_version_charge_neg_values = InsertogramMassVersionChargeNeg()
-
-normalization_names_list = []  # Arreglo para almacenar los nombres generados
-normalization_names_dict = {}  # Diccionario para almacenar los datos
-diffusive_capacitive_currents_names_list = []
-diffusive_capacitive_currents_names_dict = {}
-capacitive_current_names_list = []
-capacitive_current_names_dict = {}
-diffusive_current_names_list = []
-diffusive_current_names_dict = {}
-diffusive_capacitive_charges_names_list = []
-diffusive_capacitive_charges_names_dict = {}
-massogram_names_list = []
-massogram_names_dict = {}
-insertogram_mass_names_list = []
-insertogram_mass_names_dict = {}
-diffusive_capacitive_positive_charge_names_list = []
-diffusive_capacitive_positive_charge_names_dict = {}
-insertogram_mass_pos_names_list = []
-insertogram_mass_pos_names_dict = {}
-diffusive_capacitive_negative_charge_names_list = []
-diffusive_capacitive_negative_charge_names_dict = {}
-insertogram_mass_neg_names_list = []
-insertogram_mass_neg_names_dict = {}
-
-pestañas_superiores = ['Normalization', 'Ks positive current', 'Ks negative current', 'Cyclic voltammograms\n(Experimental & Model)', 'Capacitive Current', 'Diffusive Current', 'b parameter', 'Deconvolution of\nSpecific Charge vs Scan rate', 'Specific charge vs Scan rate', '% Specific Charge vs Scan Rate', 'Massograms', 'Active Thickness', 'Deconvolution of\nSpecific Charge vs Scan rate (+)', 'Specific charge vs Scan rate (+)', '% Specific Charge vs Scan Rate (+)', 'Active Thickness (+)', 'Deconvolution of\nSpecific Charge vs Scan rate (-)', 'Specific charge vs Scan rate (-)', '% Specific Charge vs Scan Rate (-)', 'Active Thickness (-)']
+#import settings_model_1
+import get_mass_variables
+#import get_area_variables
 
 class ZoomableGraph:
     def __init__(self, parent, label):
@@ -83,6 +38,7 @@ class ZoomableGraph:
         self.canvas.get_tk_widget().pack(side=tk.TOP, fill=tk.BOTH, expand=1)
 
     def show(self):
+        pestañas_superiores = ['Normalization', 'Ks positive current', 'Ks negative current', 'Cyclic voltammograms\n(Experimental & Model)', 'Capacitive Current', 'Diffusive Current', 'b parameter', 'Deconvolution of\nSpecific Charge vs Scan rate', 'Specific charge vs Scan rate', '% Specific Charge vs Scan Rate', 'Massograms', 'Active Thickness', 'Deconvolution of\nSpecific Charge vs Scan rate (+)', 'Specific charge vs Scan rate (+)', '% Specific Charge vs Scan Rate (+)', 'Active Thickness (+)', 'Deconvolution of\nSpecific Charge vs Scan rate (-)', 'Specific charge vs Scan rate (-)', '% Specific Charge vs Scan Rate (-)', 'Active Thickness (-)']
         self.ax.clear()
         x = np.linspace(0, 10, 100)
         y = np.linspace(0, 10, 100)
@@ -697,6 +653,76 @@ def modelo1_page():
     frame1.grid(column=0, row=0, sticky='nsew')
 
     def ejecutar_graficos():
+        from brain_model_1_mass import Normalizacion, Oxidation, Reduction, Diffusive_Capacitive, Capacitive_Current, Diffusive_Current, ParameterB,Diffusive_Capacitive_Charges, SpecificChargeVSSweepSpeed, PercentageofSpecificCharge, Diffusive_Capacitive_Positive_Charge, SpecificChargeVSSweepSpeedPos, PercentageofSpecificChargePos, Diffusive_Capacitive_Negative_Charge, SpecificChargeVSSweepSpeedNeg, PercentageofSpecificChargeNeg, Masogram, InsertogramMassVersion, InsertogramAreaVersion, InsertogramMassVersionChargePos, InsertogramMassVersionChargeNeg
+        global oxidation_values, reduction_values, parameterB_values, scharge_vs_sspeed_values, percentage_specific_charge_values, scharge_vs_sspeed_pos_values, percentage_specific_charge_pos_values, scharge_vs_sspeed_neg_values, percentage_specific_charge_neg_values
+        normalizacion_values = Normalizacion()
+        oxidation_values = Oxidation()
+        reduction_values = Reduction()
+        parameterB_values = ParameterB()
+        diffusive_capacitive_currents_values = Diffusive_Capacitive()
+        capacitive_current_values = Capacitive_Current()
+        diffusive_current_values = Diffusive_Current()
+        diffusive_capacitive_charges_values = Diffusive_Capacitive_Charges()
+        scharge_vs_sspeed_values = SpecificChargeVSSweepSpeed()
+        percentage_specific_charge_values = PercentageofSpecificCharge()
+        masogram_values = Masogram()
+        insertogram_mass_values = InsertogramMassVersion()
+        diffusive_capacitive_positive_charge_values = Diffusive_Capacitive_Positive_Charge()
+        scharge_vs_sspeed_pos_values = SpecificChargeVSSweepSpeedPos()
+        percentage_specific_charge_pos_values = PercentageofSpecificChargePos()
+        diffusive_capacitive_negative_charge_values = Diffusive_Capacitive_Negative_Charge()
+        scharge_vs_sspeed_neg_values = SpecificChargeVSSweepSpeedNeg()
+        percentage_specific_charge_neg_values = PercentageofSpecificChargeNeg()
+        insertogram_mass_version_charge_pos_values = InsertogramMassVersionChargePos()
+        insertogram_mass_version_charge_neg_values = InsertogramMassVersionChargeNeg()
+        # Crear nombres de pestañas: Velocidades.
+        global normalization_names_list # Arreglo para almacenar los nombres generados
+        global normalization_names_dict # Diccionario para almacenar los datos
+        global diffusive_capacitive_currents_names_list
+        global diffusive_capacitive_currents_names_dict
+        global capacitive_current_names_list
+        global capacitive_current_names_dict
+        global diffusive_current_names_list
+        global diffusive_current_names_dict
+        global diffusive_capacitive_charges_names_list
+        global diffusive_capacitive_charges_names_dict
+        global massogram_names_list
+        global massogram_names_dict
+        global insertogram_mass_names_list
+        global insertogram_mass_names_dict
+        global diffusive_capacitive_positive_charge_names_list
+        global diffusive_capacitive_positive_charge_names_dict
+        global insertogram_mass_pos_names_list
+        global insertogram_mass_pos_names_dict
+        global diffusive_capacitive_negative_charge_names_list
+        global diffusive_capacitive_negative_charge_names_dict
+        global insertogram_mass_neg_names_list
+        global insertogram_mass_neg_names_dict
+
+        normalization_names_list = []  # Arreglo para almacenar los nombres generados
+        normalization_names_dict = {}  # Diccionario para almacenar los datos
+        diffusive_capacitive_currents_names_list = []
+        diffusive_capacitive_currents_names_dict = {}
+        capacitive_current_names_list = []
+        capacitive_current_names_dict = {}
+        diffusive_current_names_list = []
+        diffusive_current_names_dict = {}
+        diffusive_capacitive_charges_names_list = []
+        diffusive_capacitive_charges_names_dict = {}
+        massogram_names_list = []
+        massogram_names_dict = {}
+        insertogram_mass_names_list = []
+        insertogram_mass_names_dict = {}
+        diffusive_capacitive_positive_charge_names_list = []
+        diffusive_capacitive_positive_charge_names_dict = {}
+        insertogram_mass_pos_names_list = []
+        insertogram_mass_pos_names_dict = {}
+        diffusive_capacitive_negative_charge_names_list = []
+        diffusive_capacitive_negative_charge_names_dict = {}
+        insertogram_mass_neg_names_list = []
+        insertogram_mass_neg_names_dict = {}
+
+        pestañas_superiores = ['Normalization', 'Ks positive current', 'Ks negative current', 'Cyclic voltammograms\n(Experimental & Model)', 'Capacitive Current', 'Diffusive Current', 'b parameter', 'Deconvolution of\nSpecific Charge vs Scan rate', 'Specific charge vs Scan rate', '% Specific Charge vs Scan Rate', 'Massograms', 'Active Thickness', 'Deconvolution of\nSpecific Charge vs Scan rate (+)', 'Specific charge vs Scan rate (+)', '% Specific Charge vs Scan Rate (+)', 'Active Thickness (+)', 'Deconvolution of\nSpecific Charge vs Scan rate (-)', 'Specific charge vs Scan rate (-)', '% Specific Charge vs Scan Rate (-)', 'Active Thickness (-)']
         # Agregar el código TabView al frame2
         app = PestañasVerticales(frame2)
         app.pack(expand=True, fill='both')
@@ -777,30 +803,6 @@ def modelo1_page():
 
         insertogram_mass_ver_neg_notebook = ttk.Notebook(insertogram_mass_ver_neg_tab)
         insertogram_mass_ver_neg_notebook.pack(fill=tk.BOTH, expand=True)
-
-        # Crear nombres de pestañas: Velocidades.
-        global normalization_names_list # Arreglo para almacenar los nombres generados
-        global normalization_names_dict # Diccionario para almacenar los datos
-        global diffusive_capacitive_currents_names_list
-        global diffusive_capacitive_currents_names_dict
-        global capacitive_current_names_list
-        global capacitive_current_names_dict
-        global diffusive_current_names_list
-        global diffusive_current_names_dict
-        global diffusive_capacitive_charges_names_list
-        global diffusive_capacitive_charges_names_dict
-        global massogram_names_list
-        global massogram_names_dict
-        global insertogram_mass_names_list
-        global insertogram_mass_names_dict
-        global diffusive_capacitive_positive_charge_names_list
-        global diffusive_capacitive_positive_charge_names_dict
-        global insertogram_mass_pos_names_list
-        global insertogram_mass_pos_names_dict
-        global diffusive_capacitive_negative_charge_names_list
-        global diffusive_capacitive_negative_charge_names_dict
-        global insertogram_mass_neg_names_list
-        global insertogram_mass_neg_names_dict
 
         for num, speed in enumerate(speeds):
             # Generar nombres y agregar al arreglo
@@ -1117,7 +1119,7 @@ def modelo1_page():
     btn_download.grid(row=4, column=0, columnspan=2, pady=2, padx=(10,10), sticky='nsew')  # Alinea a la derecha
     
     #Button to setiings
-    btn_settings = Button(frame1, text='⚙ Settings', bg='blue4', fg='white', font=('Arial', 10, 'bold'),activeforeground='blue4',command=settings_model_1.ejecutar_settings)
+    btn_settings = Button(frame1, text='⚙ Settings', bg='blue4', fg='white', font=('Arial', 10, 'bold'),activeforeground='blue4',command=ejecutar_settings)
     btn_settings.grid(row=5,column=0,columnspan=2,pady=2,padx=(10,10),sticky='nsew')
 
     #Button to continue
