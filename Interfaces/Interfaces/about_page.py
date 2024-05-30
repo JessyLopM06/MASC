@@ -28,7 +28,8 @@ Requirements Analysis: Comprehensive understanding of project needs is key. Soft
 
 # Crear la ventana principal
 root = tk.Tk()
-root.title("About Page Example")
+root.title("About Page")
+
 root.geometry("800x600")
 
 # Llamar a la función para mostrar la página "About"
