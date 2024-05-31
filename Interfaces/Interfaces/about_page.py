@@ -51,9 +51,9 @@ def about_page():
         "MASSC was designed in the Facultad de Ingeniería Mecánica y Eléctrica from the Universidad Autónoma de Nuevo León. "
         "If you are going to use MASSC, please cite the following two scientific articles.\n\n"
         "◾Layered Vanadium Phosphates as Electrodes for Electrochemical Capacitors Part I: The Case of VOPO₄·2H₂O. Journal of "
-        "The Electrochemical Society, 2021, 168, 070531.DOI 10.1149/1945-7111/ac11a3.\n"
+        "The Electrochemical Society, 2021, 168, 070531. DOI 10.1149/1945-7111/ac11a3.\n"
         "◾Layered Vanadium Phosphates as Electrodes for Electrochemical Capacitors Part II: The Case of VOPO₄·CTAB and "
-        "K₀.₅VOPO₄·1.5H₂O. Journal of The Electrochemical Society, 2021, 168, 090520.DOI 10.1149/1945-7111/ac23a0."
+        "K₀.₅VOPO₄·1.5H₂O. Journal of The Electrochemical Society, 2021, 168, 090520. DOI 10.1149/1945-7111/ac23a0."
     )
     about_text_txt = tk.Text(about_page_fm, wrap="word")
     about_text_txt.insert(tk.END, about_text)
